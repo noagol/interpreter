@@ -17,7 +17,7 @@ public:
     }
 
     T get(string& key) {
-        T value = table[key];
+        T value = table.at(key);
         if (value){
             return value;
         } else {

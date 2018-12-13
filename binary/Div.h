@@ -17,6 +17,9 @@ public:
         return getLeft()->calculate() / getRight()->calculate();
     }
 
+    double calculate(SymbolTable *symbolTable) override {
+        return getLeft()->calculate(symbolTable) / getRight()->calculate(symbolTable);
+    }
 };
 
 

@@ -7,10 +7,9 @@
 #include "Command.h"
 
 class IfCommand : public Command{
-    vector<Command> commands;
-    IfCommand(vector<Command>* comm){
-        this->commands = *comm;
-    }
+    vector<Command>* commands;
+
+    IfCommand(vector<Command>* comm) : commands(comm){}
 
     int doCommand(vector<string>* params) override {
 
