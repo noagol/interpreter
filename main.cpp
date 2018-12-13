@@ -7,6 +7,6 @@ using namespace std;
 
 int main() {
     InterpreterTest t = InterpreterTest();
-    t.test1();
+    t.test3();
     return 0;
 }

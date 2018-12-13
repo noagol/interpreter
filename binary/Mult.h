@@ -7,8 +7,6 @@
 #include "../expressions/BinaryExpression.h"
 
 #define PROJECT_ADVANCED_MUL_H
-
-
 class Mult : public BinaryExpression {
 public:
     Mult(Expression *l, Expression *r) : BinaryExpression(l, r) {}

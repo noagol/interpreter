@@ -25,6 +25,26 @@ public:
         c->doCommand(&s);
         cout << "End sleep" << endl;
     }
+
+    void test2() {
+        string t = "print \"abcd\"";
+
+        CommandTable commandTable = CommandTable();
+        vector<string> s = lexer(t);
+        Parser parser = Parser(&commandTable);
+        Command *c = parser.parseLine(&s);
+        c->doCommand(&s);
+    }
+
+    void test3() {
+        string t = "print 100    ";
+
+        CommandTable commandTable = CommandTable();
+        vector<string> s = lexer(t);
+        Parser parser = Parser(&commandTable);
+        Command *c = parser.parseLine(&s);
+        c->doCommand(&s);
+    }
 };
 
 #endif //PROJECT_ADVANCED_INTERPRETERTESTS_H

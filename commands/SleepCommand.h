@@ -25,6 +25,8 @@ public:
         } else {
             this_thread::sleep_for(std::chrono::milliseconds((unsigned int) sleepTime));
         }
+
+        return 2;
     }
 };
 
