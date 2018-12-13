@@ -10,19 +10,18 @@
 
 
 class UnaryExpression : public Expression {
-    Expression *number;
+    Expression *expression;
 
 public:
-    UnaryExpression(Expression *num) :
-            number(num) {
-    }
+    UnaryExpression(Expression *exp) :
+            expression(exp) {}
 
     ~UnaryExpression() override {
-        delete (number);
+        delete (expression);
     }
 
-    Expression *getNumber() const {
-        return number;
+    Expression *getExpression() const {
+        return expression;
     }
 
 };

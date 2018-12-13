@@ -19,6 +19,10 @@ public:
         return number;
     }
 
+    double calculate(SymbolTable *symbolTable) override {
+        return number;
+    }
+
 };
 
 #endif //PROJECT_ADVANCED_NUMBER_H

@@ -11,13 +11,11 @@
 
 class Neg : public UnaryExpression {
 public:
-    Neg(Expression *num) : UnaryExpression(num) {}
+    Neg(Expression *exp) : UnaryExpression(exp) {}
 
     double calculate() override {
-        return -1 * getNumber()->calculate();
+        return -1 * getExpression()->calculate();
     }
 
 };
-
-
 #endif //PROJECT_ADVANCED_NEG_H

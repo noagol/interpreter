@@ -1,12 +1,12 @@
 #include <iostream>
 #include "binary/Plus.h"
 #include "expressions/Number.h"
+#include "tests/InterpreterTests.h"
 
 using namespace std;
 
 int main() {
-
-    double a = (new Plus(new Plus(new Number(4), new Number(-2)), new Number(1)))->calculate();
-    cout << a << endl;
+    InterpreterTest t = InterpreterTest();
+    t.test1();
     return 0;
 }

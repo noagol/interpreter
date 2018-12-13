@@ -11,7 +11,7 @@
 
 using namespace std;
 
-static vector<string> split(string const &input) {
+static vector<string> lexer(string const &input) {
     istringstream buffer(input);
     vector<string> ret;
 

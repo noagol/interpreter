@@ -11,12 +11,15 @@
 
 class OpenServerCommand : public Command{
 public:
-    int doCommand(vector<string> *params) override {
+    int doCommand(vector<string>* params) override {
+        // Validate
         if (params->size() != 2){
             throw invalid_argument("Bad number of inputs to OpenServerCommand");
         }
-        int port = stoi(params->at(0));
-        int timesPerSecond = stoi(params->at(1));
+
+        // Extract params
+        int port = stoi(params->at(1));
+        int timesPerSecond = stoi(params->at(2));
         runServer(port, timesPerSecond);
         return 3;
     }
@@ -37,7 +40,7 @@ public:
              sizeof(address));
 
         // Run thread
-        thread serverThread(handleRequests, server, &address);
+//        thread serverThread(handleRequests, server, &address);
 
     }
 
@@ -52,19 +55,19 @@ public:
         int addrlen = sizeof(address);
 
         // For debug
-        char *hello = "Hello from server";
-        char buffer[1024] = {0};
-        listen(server, 5);
-        while (true){
-            // accepting a client
-            clientSocket = accept(server, (struct sockaddr *)address,
-                                (socklen_t*)&addrlen);
-
-            valueRead = read( clientSocket , buffer, 1024);
-            printf("%s\n",buffer );
-            send(clientSocket , hello , strlen(hello) , 0 );
-            printf("Hello message sent\n");
-        }
+//        char *hello = "Hello from server";
+//        char buffer[1024] = {0};
+//        listen(server, 5);
+//        while (true){
+//            // accepting a client
+//            clientSocket = accept(server, (struct sockaddr *)address,
+//                                (socklen_t*)&addrlen);
+//
+//            valueRead = read( clientSocket , buffer, 1024);
+//            printf("%s\n",buffer );
+//            send(clientSocket , hello , strlen(hello) , 0 );
+//            printf("Hello message sent\n");
+//        }
 
     }
 };

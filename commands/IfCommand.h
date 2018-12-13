@@ -1,21 +1,28 @@
 
 
 #ifndef ADVANCED_IFCOMMAND_H
-#define ADVANCED_IFCOMMAND_H
 
 #include <list>
 #include "Command.h"
+#include "ConditionParser.h"
 
-class IfCommand : public Command{
-    vector<Command>* commands;
+#define ADVANCED_IFCOMMAND_H
 
-    IfCommand(vector<Command>* comm) : commands(comm){}
 
-    int doCommand(vector<string>* params) override {
+class IfCommand : public ConditionParser {
+public:
+    IfCommand(Expression *cond, vector<Command> *command) :
+            ConditionParser(cond, command) {}
 
+    int doCommand(vector<string> *params) override {
+        if (getCondition()->calculate()) {
+            typename vector<Command>::iterator it;
+            for (it = getCommands()->begin(); it != getCommands()->end(); ++it) {
+
+            }
+        }
     }
 };
-
 
 
 #endif //ADVANCED_IFCOMMAND_H
