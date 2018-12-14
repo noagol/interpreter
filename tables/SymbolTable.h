@@ -10,8 +10,20 @@
 using namespace std;
 
 class SymbolTable : public Table<double> {
+    static SymbolTable *instance;
 public:
     SymbolTable() {};
+
+    static SymbolTable *getInstance() {
+        if (!instance) {
+            instance = new SymbolTable();
+            return instance;
+        } else {
+            return instance;
+        }
+    }
 };
+
+SymbolTable *SymbolTable::instance = nullptr;
 
 #endif //ADVANCED_SYMBOLTABLE_H

@@ -5,6 +5,7 @@
 #ifndef PROJECT_ADVANCED_SLEEPCOMMAND_H
 
 #include "Command.h"
+#include "../expressions/TokenArray.h"
 #include <chrono>
 #include <thread>
 #include <stdexcept>
@@ -16,17 +17,26 @@ class SleepCommand : public Command {
 public:
     SleepCommand() {}
 
-    int doCommand(vector<string> *params) override {
-        // exp = Diextra(params[0])
-        // sleep(exp.calculate())
-        int sleepTime = stoi(params->at(1));
+    int doCommand() override {
+        // Get sleep argument
+        string token = TokenArray::getInstance()->next();
+
+        // Parse expression
+        Expression *expression = ExpressionParser::parse(token);
+        int sleepTime = (int) expression->calculate();
+
+        // Remove allocated memory
+        delete (expression);
+
         if (sleepTime < 0) {
+            // Invalid sleep time
             throw invalid_argument("Negative time for sleep");
-        } else {
-            this_thread::sleep_for(std::chrono::milliseconds((unsigned int) sleepTime));
         }
 
-        return 2;
+        // Sleep
+        this_thread::sleep_for(std::chrono::milliseconds((unsigned int) sleepTime));
+
+        return 0;
     }
 };
 

@@ -15,36 +15,32 @@ using namespace std;
 class InterpreterTest {
 public:
     void test1() {
-        string t = "sleep 5000";
+        string input = "sleep 5000";
 
-        CommandTable commandTable = CommandTable();
-        vector<string> s = lexer(t);
-        Parser parser = Parser(&commandTable);
-        Command *c = parser.parseLine(&s);
+        lexer(input);
         cout << "Start sleep" << endl;
-        c->doCommand(&s);
+        Parser::parse();
         cout << "End sleep" << endl;
     }
 
     void test2() {
-        string t = "print \"abcd\"";
-
-        CommandTable commandTable = CommandTable();
-        vector<string> s = lexer(t);
-        Parser parser = Parser(&commandTable);
-        Command *c = parser.parseLine(&s);
-        c->doCommand(&s);
+        string input = "print \"abcd\"";
+        lexer(input);
+        Parser::parse();
     }
 
     void test3() {
-        string t = "print 100    ";
-
-        CommandTable commandTable = CommandTable();
-        vector<string> s = lexer(t);
-        Parser parser = Parser(&commandTable);
-        Command *c = parser.parseLine(&s);
-        c->doCommand(&s);
+        string input = "print 5*2";
+        lexer(input);
+        Parser::parse();
     }
+
+    void test4() {
+        string input = "openDataServer 5400 10 sleep 10000000";
+        lexer(input);
+        Parser::parse();
+    }
+
 };
 
 #endif //PROJECT_ADVANCED_INTERPRETERTESTS_H

@@ -16,13 +16,8 @@ public:
     Var(string n) : name(n) {}
 
     double calculate() override {
-        return 0;
+        return *SymbolTable::getInstance()->get(name);
     }
-
-    double calculate(SymbolTable *symbolTable) override {
-        return symbolTable->get(name);
-    }
-
 };
 
 #endif //PROJECT_ADVANCED_VAR_H

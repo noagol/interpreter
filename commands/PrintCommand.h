@@ -7,20 +7,40 @@
 
 #include <iostream>
 #include "Command.h"
+#include "../expressions/TokenArray.h"
+#include "../exceptions/CompilationException.h"
+#include "../expressions/ExpressionParser.h"
 
 class PrintCommand : public Command {
 
 public:
     PrintCommand() {}
 
-    int doCommand(vector<string> *params) override {
-        string s = params->at(1);
-        if (s.at(0) == '\"') {
-            cout << s.substr(1, s.size() - 2) << endl;
+    int doCommand() override {
+        string token = TokenArray::getInstance()->next();
+
+        if (token.at(0) == '\"') {
+            // String
+            cout << token.substr(1, token.size() - 2) << endl;
         } else {
-            // cout << call dijstra << endl;
-            cout << s << endl;
+            // Expression
+            Expression *expression = ExpressionParser::parse(token);
+            cout << expression->calculate() << endl;
+            delete (expression);
         }
+
+        return 0;
+//
+//        if (type == STRING_TOKEN) {
+//            Token<string> s = (Token<string>) t;
+//            cout << ((string) t->getValue()) << endl;
+//        } else if (type == DOUBLE_TOKEN) {
+//            cout << ((double) t->getValue()) << endl;
+//        } else {
+//            throw CompilationException("Invalid argument for print");
+//        }
+
+
     }
 };
 

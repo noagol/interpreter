@@ -14,10 +14,6 @@ public:
     double calculate() override {
         return getLeft()->calculate() + getRight()->calculate();
     }
-
-    double calculate(SymbolTable *symbolTable) override {
-        return getLeft()->calculate(symbolTable) > getRight()->calculate(symbolTable);
-    }
 };
 
 #endif //PROJECT_ADVANCED_BIGGERTHAN_H

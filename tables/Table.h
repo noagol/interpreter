@@ -22,12 +22,15 @@ public:
     }
 
     T *get(string &key) {
-        T *value = table.at(key);
-        if (value) {
-            return value;
+        if (exists(key)) {
+            return table.at(key);
         } else {
             throw invalid_argument("Key is not present in table");
         }
+    }
+
+    bool exists(string &key) {
+        return table.find(key) != table.end();
     }
 
     ~Table() {
@@ -38,5 +41,9 @@ public:
     }
 
 };
+
+//template<class T>
+//T Table<T>::table;
+//template <class T> typename Table<T>::table table;
 
 #endif //ADVANCED_TABLE_H

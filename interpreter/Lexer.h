@@ -9,6 +9,7 @@
 #include <sstream>
 #include <iterator>
 #include "../exceptions/LexerException.h"
+#include "../expressions/TokenArray.h"
 
 using namespace std;
 
@@ -16,15 +17,16 @@ static bool isWhitespace(char c) {
     return c == ' ' || c == '\n' || c == '\r' || c == '\t';
 }
 
-static vector<string> lexer(const string &input) {
-    vector<string> split;
+static void lexer(const string &input) {
+//    vector<string> split;
     string token;
     bool stringMode = false;
     unsigned long int i;
     for (i = 0; i < input.length(); i++) {
         if (isWhitespace(input.at(i)) && !stringMode) {
             if (!token.empty()) {
-                split.push_back(token);
+                TokenArray::getInstance()->add(token);
+//                split.push_back(token);
                 token = "";
             }
         } else if (input.at(i) == '"') {
@@ -39,10 +41,9 @@ static vector<string> lexer(const string &input) {
         throw LexerException("String has not been terminated");
     }
     if (!token.empty()) {
-        split.push_back(token);
+        TokenArray::getInstance()->add(token);
     }
-
-    return split;
+//    return split;
 }
 
 //static vector<string> lexer(string const &input) {

@@ -1,22 +1,40 @@
 #ifndef ADVANCED_PARSER_H
 #define ADVANCED_PARSER_H
 
-#include <string>
 #include <vector>
-#include <Command.h>
-#include <CommandTable.h>
+#include <string>
+#include "../tables/CommandTable.h"
+#include "../tables/SymbolTable.h"
+#include "../expressions/ExpressionParser.h"
+#include "../tokens/CommandToken.h"
+#include "../tokens/SymbolToken.h"
+#include "../tokens/StringToken.h"
+#include "../tokens/DoubleToken.h"
+#include "../expressions/TokenArray.h"
 
 using namespace std;
 
 class Parser {
-    CommandTable* commandTable;
 public:
-    Parser(CommandTable* ct){
-        commandTable = ct;
+    Parser() {}
+
+    static void parse() {
+        while (!TokenArray::getInstance()->isFinished()) {
+            parseCommand();
+        }
     }
 
-    Command *parseLine(vector<string> *line) {
-        return commandTable->get(line->at(0));
+    static bool parseCommand() {
+        string token = TokenArray::getInstance()->next();
+        if (isCommand(token)) {
+            Command *command = CommandTable::getInstance()->get(token);
+            int incBy = command->doCommand();
+            TokenArray::getInstance()->move(incBy);
+        }
+    }
+
+    static bool isCommand(string &key) {
+        return CommandTable::getInstance()->exists(key);
     }
 };
 

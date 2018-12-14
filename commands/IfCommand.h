@@ -14,7 +14,7 @@ public:
     IfCommand(Expression *cond, vector<Command> *command) :
             ConditionParser(cond, command) {}
 
-    int doCommand(vector<string> *params) override {
+    void doCommand() override {
         if (getCondition()->calculate()) {
             typename vector<Command>::iterator it;
             for (it = getCommands()->begin(); it != getCommands()->end(); ++it) {

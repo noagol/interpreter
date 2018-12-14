@@ -8,10 +8,9 @@
 
 using namespace std;
 
-class Command{
+class Command {
 public:
-    virtual int doCommand(vector<string>* params) = 0;
+    virtual int doCommand() = 0;
 };
-
 
 #endif //ADVANCED_COMMAND_H
