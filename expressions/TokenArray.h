@@ -7,19 +7,28 @@
 
 #include <queue>
 #include "Expression.h"
-#include "../exceptions/CompilationException.h"
+#include "../exceptions/ParserException.h"
 
 using namespace std;
 
 class TokenArray {
     static TokenArray *instance;
+
     vector<string> array;
     int i;
 public:
     TokenArray() : i(0) {}
 
+    int getIndex(){
+        return i;
+    }
+
     string next() {
         return array.at(i++);
+    }
+
+    string peek() {
+        return array.at(i);
     }
 
     string get(int index) {

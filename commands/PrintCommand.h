@@ -8,7 +8,7 @@
 #include <iostream>
 #include "Command.h"
 #include "../expressions/TokenArray.h"
-#include "../exceptions/CompilationException.h"
+#include "../exceptions/ParserException.h"
 #include "../expressions/ExpressionParser.h"
 
 class PrintCommand : public Command {
@@ -16,7 +16,7 @@ class PrintCommand : public Command {
 public:
     PrintCommand() {}
 
-    int doCommand() override {
+    void doCommand() override {
         string token = TokenArray::getInstance()->next();
 
         if (token.at(0) == '\"') {
@@ -28,8 +28,6 @@ public:
             cout << expression->calculate() << endl;
             delete (expression);
         }
-
-        return 0;
 //
 //        if (type == STRING_TOKEN) {
 //            Token<string> s = (Token<string>) t;
@@ -37,7 +35,7 @@ public:
 //        } else if (type == DOUBLE_TOKEN) {
 //            cout << ((double) t->getValue()) << endl;
 //        } else {
-//            throw CompilationException("Invalid argument for print");
+//            throw ParserException("Invalid argument for print");
 //        }
 
 

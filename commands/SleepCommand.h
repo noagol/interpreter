@@ -17,7 +17,7 @@ class SleepCommand : public Command {
 public:
     SleepCommand() {}
 
-    int doCommand() override {
+    void doCommand() override {
         // Get sleep argument
         string token = TokenArray::getInstance()->next();
 
@@ -35,8 +35,6 @@ public:
 
         // Sleep
         this_thread::sleep_for(std::chrono::milliseconds((unsigned int) sleepTime));
-
-        return 0;
     }
 };
 

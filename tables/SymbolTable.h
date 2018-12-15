@@ -5,11 +5,11 @@
 #ifndef ADVANCED_SYMBOLTABLE_H
 #define ADVANCED_SYMBOLTABLE_H
 
-#include "Table.h"
+#include "PrimitiveTable.h"
 
 using namespace std;
 
-class SymbolTable : public Table<double> {
+class SymbolTable : public PrimitiveTable<double> {
     static SymbolTable *instance;
 public:
     SymbolTable() {};

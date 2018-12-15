@@ -1,27 +1,25 @@
 #ifndef ADVANCED_COMMANDTABLE_H
+#define ADVANCED_COMMANDTABLE_H
+
+#include "DynamicTable.h"
+#include "../commands/Command.h"
+#include "../commands/OpenServerCommand.h"
+#include "../expressions/CommandExpression.h"
 
 #define PRINT_COMMAND "print"
 #define SLEEP_COMMAND "sleep"
 #define OPEN_DATA_SERVER_COMMAND "openDataServer"
-
-#include <SleepCommand.h>
-#include <PrintCommand.h>
-#include "Table.h"
-#include "../commands/Command.h"
-#include "../commands/OpenServerCommand.h"
+#define VAR_COMMAND "var"
+#define ASSIGNMENT_COMMAND "="
+#define BIND_COMMAND "bind"
 
 using namespace std;
 
-#define ADVANCED_COMMANDTABLE_H
-
-
-class CommandTable : public Table<Command> {
+class CommandTable : public DynamicTable<Expression> {
     static CommandTable *instance;
 public:
     CommandTable() {
-        add(OPEN_DATA_SERVER_COMMAND, new OpenServerCommand());
-        add(SLEEP_COMMAND, new SleepCommand());
-        add(PRINT_COMMAND, new PrintCommand());
+
     };
 
     static CommandTable *getInstance() {

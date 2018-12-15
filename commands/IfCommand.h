@@ -3,6 +3,7 @@
 #ifndef ADVANCED_IFCOMMAND_H
 
 #include <list>
+#include <Parser.h>
 #include "Command.h"
 #include "ConditionParser.h"
 
@@ -11,15 +12,12 @@
 
 class IfCommand : public ConditionParser {
 public:
-    IfCommand(Expression *cond, vector<Command> *command) :
-            ConditionParser(cond, command) {}
+    IfCommand(Expression *cond) : ConditionParser(cond) {}
 
     void doCommand() override {
-        if (getCondition()->calculate()) {
-            typename vector<Command>::iterator it;
-            for (it = getCommands()->begin(); it != getCommands()->end(); ++it) {
+        if (checkCondition()) {
+            Parser parser = Parser();
 
-            }
         }
     }
 };

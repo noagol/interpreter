@@ -10,7 +10,7 @@ using namespace std;
 
 class Command {
 public:
-    virtual int doCommand() = 0;
+    virtual void doCommand() = 0;
 };
 
 #endif //ADVANCED_COMMAND_H

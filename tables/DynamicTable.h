@@ -10,7 +10,7 @@
 using namespace std;
 
 template<class T>
-class Table {
+class DynamicTable {
     map<string, T *> table;
 public:
     void add(const char *key, T *value) {
@@ -33,7 +33,7 @@ public:
         return table.find(key) != table.end();
     }
 
-    ~Table() {
+    ~DynamicTable() {
         typename map<string, T *>::iterator it;
         for (it = table.begin(); it != table.end(); ++it) {
             delete (it->second);
@@ -43,7 +43,7 @@ public:
 };
 
 //template<class T>
-//T Table<T>::table;
-//template <class T> typename Table<T>::table table;
+//T DynamicTable<T>::table;
+//template <class T> typename DynamicTable<T>::table table;
 
 #endif //ADVANCED_TABLE_H

@@ -6,10 +6,6 @@
 #include "../tables/CommandTable.h"
 #include "../tables/SymbolTable.h"
 #include "../expressions/ExpressionParser.h"
-#include "../tokens/CommandToken.h"
-#include "../tokens/SymbolToken.h"
-#include "../tokens/StringToken.h"
-#include "../tokens/DoubleToken.h"
 #include "../expressions/TokenArray.h"
 
 using namespace std;
@@ -18,22 +14,27 @@ class Parser {
 public:
     Parser() {}
 
-    static void parse() {
+    void parseUntil(string endSign) {
+        while (!TokenArray::getInstance()->isFinished() || TokenArray) {
+            parseCommand();
+        }
+    }
+
+    void parse() {
         while (!TokenArray::getInstance()->isFinished()) {
             parseCommand();
         }
     }
 
-    static bool parseCommand() {
+    bool parseCommand() {
         string token = TokenArray::getInstance()->next();
         if (isCommand(token)) {
-            Command *command = CommandTable::getInstance()->get(token);
-            int incBy = command->doCommand();
-            TokenArray::getInstance()->move(incBy);
+            Expression *command = CommandTable::getInstance()->get(token);
+            command->calculate();
         }
     }
 
-    static bool isCommand(string &key) {
+    bool isCommand(string &key) {
         return CommandTable::getInstance()->exists(key);
     }
 };

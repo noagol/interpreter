@@ -16,7 +16,7 @@ public:
     Var(string n) : name(n) {}
 
     double calculate() override {
-        return *SymbolTable::getInstance()->get(name);
+        return SymbolTable::getInstance()->get(name);
     }
 };
 

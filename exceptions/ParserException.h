@@ -11,10 +11,10 @@ using namespace std;
 #define PROJECT_ADVANCED_COMPILATIONEXCEPTION_H
 
 
-class CompilationException : public exception {
+class ParserException : public exception {
     const char *message;
 public:
-    CompilationException(const char *msg) : message(msg) {}
+    ParserException(const char *msg) : message(msg) {}
 
     const char *what() const throw() {
         return message;

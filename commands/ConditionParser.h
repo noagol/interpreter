@@ -9,23 +9,14 @@
 #include "Command.h"
 
 class ConditionParser : public Command {
-
 private:
     Expression *condition;
-    vector<Command> *commands;
 public:
-    ConditionParser(Expression *cond, vector<Command>* command) :
-            condition(cond), commands(command) {}
+    ConditionParser(Expression *cond) : condition(cond) {}
 
-    Expression *getCondition() const {
-        return condition;
+    bool checkCondition() const {
+        return (bool) condition->calculate();
     }
-
-    vector<Command> *getCommands() const {
-        return commands;
-    }
-
-
 };
 
 #endif //PROJECT_ADVANCED_CONDITIONPARSER_H
