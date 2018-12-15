@@ -1,6 +1,9 @@
+//
+// Created by EB on 15/12/2018.
+//
 
-
-#ifndef ADVANCED_IFCOMMAND_H
+#ifndef PROJECT_ADVANCED_LOOPCOMMAND_H
+#define PROJECT_ADVANCED_LOOPCOMMAND_H
 
 #include <list>
 #include <Parser.h>
@@ -10,9 +13,9 @@
 #define ADVANCED_IFCOMMAND_H
 
 
-class IfCommand : public ConditionParser {
+class LoopCommand : public ConditionParser {
 public:
-    IfCommand() : ConditionParser() {}
+    LoopCommand() : ConditionParser() {}
 
     void doCommand() override {
         Expression *condition = readCondition();
@@ -21,16 +24,17 @@ public:
             throw ParserException("Missing opening brackets in if command");
         }
 
-        if ((bool) condition->calculate()) {
+        int startPosition = TokenArray::getInstance()->getIndex();
+
+        while ((bool) condition->calculate()) {
+            TokenArray::getInstance()->moveTo(startPosition);
             Parser parser = Parser();
             parser.parse();
-        } else {
-            TokenArray::getInstance()->skipToNextEnd();
         }
+        TokenArray::getInstance()->skipToNextEnd();
 
         delete (condition);
     }
 };
 
-
-#endif //ADVANCED_IFCOMMAND_H
+#endif //PROJECT_ADVANCED_LOOPCOMMAND_H

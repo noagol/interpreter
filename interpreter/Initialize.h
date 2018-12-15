@@ -10,6 +10,8 @@
 #include <DefineVarCommand.h>
 #include <AssignmentCommand.h>
 #include <BindCommand.h>
+#include <IfCommand.h>
+#include <LoopCommand.h>
 
 class Initialize {
 private:
@@ -21,6 +23,8 @@ private:
         ct->add(VAR_COMMAND, new CommandExpression(new DefineVarCommand()));
         ct->add(BIND_COMMAND, new CommandExpression(new BindCommand()));
         ct->add(ASSIGNMENT_COMMAND, new CommandExpression(new AssignmentCommand()));
+        ct->add(IF_COMMAND, new CommandExpression(new IfCommand()));
+        ct->add(WHILE_COMMAND, new CommandExpression(new LoopCommand()));
     }
 
 public:

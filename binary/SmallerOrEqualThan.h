@@ -7,12 +7,12 @@
 
 #include "../expressions/BinaryExpression.h"
 
-class SmallerThan : public BinaryExpression {
+class SmallerOrEqualThan : public BinaryExpression {
 public:
-    SmallerThan(Expression *l, Expression *r) : BinaryExpression(l, r) {}
+    SmallerOrEqualThan(Expression *l, Expression *r) : BinaryExpression(l, r) {}
 
     double calculate() override {
-        return getLeft()->calculate() + getRight()->calculate();
+        return getLeft()->calculate() <= getRight()->calculate();
     }
 };
 

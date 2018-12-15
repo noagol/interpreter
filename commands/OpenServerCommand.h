@@ -16,11 +16,11 @@ class OpenServerCommand : public Command {
 public:
     void doCommand() override {
         // Extract params
-        Expression *portExp = ExpressionParser::parse(TokenArray::getInstance()->next());
+        Expression *portExp = ExpressionParser().parse(TokenArray::getInstance()->next());
         int port = (int) portExp->calculate();
         delete (portExp);
 
-        Expression *hzExp = ExpressionParser::parse(TokenArray::getInstance()->next());
+        Expression *hzExp = ExpressionParser().parse(TokenArray::getInstance()->next());
         int timesPerSecond = (int) hzExp->calculate();
         delete (hzExp);
 

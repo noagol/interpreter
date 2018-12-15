@@ -12,12 +12,15 @@ using namespace std;
 
 
 class ParserException : public exception {
-    const char *message;
+    const string message;
 public:
     ParserException(const char *msg) : message(msg) {}
 
+    ParserException(const string msg) : message(msg) {}
+
+
     const char *what() const throw() {
-        return message;
+        return message.c_str();
     }
 };
 

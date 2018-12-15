@@ -12,12 +12,15 @@ using namespace std;
 
 
 class LexerException : public exception {
-    const char *message;
+    const string message;
 public:
     LexerException(const char *msg) : message(msg) {}
 
+    LexerException(const string msg) : message(msg) {}
+
+
     const char *what() const throw() {
-        return message;
+        return message.c_str();
     }
 };
 

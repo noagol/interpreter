@@ -66,6 +66,50 @@ public:
         run(input);
         cout << endl;
     }
+
+
+    void test9() {
+        string input = "var x = 5 if x<6 { print 100 } print \"end\"";
+        cout << "100 end expected: " << endl;
+        run(input);
+
+    }
+
+    void test10() {
+        string input = "var x = 5 if x<6 { print 1 if 3>x { print 2 } } print \"end\"";
+        cout << "1 end expected: " <<endl;
+        run(input);
+        cout << endl;
+    }
+
+    void test11() {
+        string input = "var x = 5 if x>6 { print 1 if 3>x { print 2 } } print \"end\"";
+        cout << "end expected: " <<endl;
+        run(input);
+        cout << endl;
+    }
+
+    void test12() {
+        string input = "var i = 0 while i<5 { print i i = i+1 }";
+        cout << "0-4 expected: " <<endl;
+        run(input);
+        cout << endl;
+    }
+
+    void test13() {
+        string input = "var i = -(5*5) print i";
+        cout << "-25 expected: " <<endl;
+        run(input);
+        cout << endl;
+    }
+
+    void test14() {
+        // BUGGGGGG
+        string input = "var i = (5*(5+10)+1) print i";
+        cout << "-74 expected: " <<endl;
+        run(input);
+        cout << endl;
+    }
 };
 
 #endif //PROJECT_ADVANCED_INTERPRETERTESTS_H

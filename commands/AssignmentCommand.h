@@ -22,7 +22,7 @@ public:
             Expression *command = CommandTable::getInstance()->get(token);
             command->calculate();
         } else {
-            Expression *expression = ExpressionParser::parse(token);
+            Expression *expression = ExpressionParser().parse(token);
             SymbolTable::getInstance()->add(varName, expression->calculate());
             delete (expression);
         }

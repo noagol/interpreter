@@ -7,6 +7,7 @@
 #include "../tables/SymbolTable.h"
 #include "../expressions/ExpressionParser.h"
 #include "../expressions/TokenArray.h"
+#include "../helpers/StringHelpers.h"
 
 using namespace std;
 
@@ -14,14 +15,8 @@ class Parser {
 public:
     Parser() {}
 
-    void parseUntil(string endSign) {
-        while (!TokenArray::getInstance()->isFinished() || TokenArray) {
-            parseCommand();
-        }
-    }
-
     void parse() {
-        while (!TokenArray::getInstance()->isFinished()) {
+        while (!TokenArray::getInstance()->isFinished() && TokenArray::getInstance()->peek() != "}") {
             parseCommand();
         }
     }
@@ -31,11 +26,26 @@ public:
         if (isCommand(token)) {
             Expression *command = CommandTable::getInstance()->get(token);
             command->calculate();
+        } else if (isVariable(token)) {
+            string nextToken = TokenArray::getInstance()->next();
+            if (nextToken == "=") {
+                Expression *command = CommandTable::getInstance()->get(nextToken);
+                command->calculate();
+            } else {
+                throw ParserException(format("Undefined command given: %s %s", token, nextToken));
+            }
+        } else {
+            throw ParserException(format("Undefined token: %s", token));
         }
     }
 
+
     bool isCommand(string &key) {
         return CommandTable::getInstance()->exists(key);
+    }
+
+    bool isVariable(string &key) {
+        return SymbolTable::getInstance()->exists(key);
     }
 };
 

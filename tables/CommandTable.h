@@ -12,6 +12,8 @@
 #define VAR_COMMAND "var"
 #define ASSIGNMENT_COMMAND "="
 #define BIND_COMMAND "bind"
+#define IF_COMMAND "if"
+#define WHILE_COMMAND "while"
 
 using namespace std;
 

@@ -12,19 +12,34 @@
 #include "../binary/Div.h"
 #include "Number.h"
 #include "Var.h"
+#include "../binary/SmallerOrEqualThan.h"
+#include "../binary/BiggerThan.h"
+#include "../binary/BiggerOrEqualThan.h"
+#include "../binary/EqualTo.h"
+#include "../binary/NotEqualTo.h"
+#include "../binary/SmallerThan.h"
+#include "../exceptions/ParserException.h"
+#include "../unary/Neg.h"
+#include "../unary/Not.h"
 
 using namespace std;
 
+enum OPERATORS {
+    PLUS, MINUS, DIV, MULT, SMALLER_THAN,
+    BIGGER_THAN, SMALLER_OR_EQUAL, BIGGER_OR_EQUAL,
+    EQUAL, NOT_EQUAL, OPEN_BRACKETS, NEGATIVE, LOGICAL_NOT
+};
 
 class ExpressionParser {
+    // stack to store integer values.
+    stack<Expression *> values;
+    // stack to store operators.
+    stack<OPERATORS> operators;
 public:
-    static Expression *parse(string tokens) {
-        unsigned long int i;
-        // stack to store integer values.
-        stack<Expression *> values;
-        // stack to store operators.
-        stack<char> operators;
+    ExpressionParser() : values(), operators() {}
 
+    Expression *parse(string tokens) {
+        unsigned long int i;
         string var = "";
 
         // Iterate through the string
@@ -36,11 +51,10 @@ public:
                     values.push(new Var(var));
                     var = "";
                 }
-                continue;
             } else if (tokens[i] == '(') {
                 // Current token is an opening
                 // brace, push it to operators stack
-                operators.push(tokens[i]);
+                operators.push(OPEN_BRACKETS);
             } else if (isdigit(tokens[i])) {
                 // Current token is a number, push
                 // it to stack for numbers.
@@ -63,17 +77,8 @@ public:
             } else if (tokens[i] == ')') {
                 // Closing brace encountered, solve
                 // entire brace.
-                while (!operators.empty() && operators.top() != '(') {
-                    Expression *val2 = values.top();
-                    values.pop();
-
-                    Expression *val1 = values.top();
-                    values.pop();
-
-                    char op = operators.top();
-                    operators.pop();
-
-                    values.push(applyOp(val1, val2, op));
+                while (!operators.empty() && operators.top() != OPEN_BRACKETS) {
+                    popOperator();
                 }
 
                 // pop opening brace.
@@ -97,20 +102,11 @@ public:
 
                 while (!operators.empty() && precedence(operators.top())
                                              >= precedence(tokens[i])) {
-                    Expression *val2 = values.top();
-                    values.pop();
-
-                    Expression *val1 = values.top();
-                    values.pop();
-
-                    char op = operators.top();
-                    operators.pop();
-
-                    values.push(applyOp(val1, val2, op));
+                    popOperator();
                 }
 
                 // Push current token to 'ops'.
-                operators.push(tokens[i]);
+                operators.push(getOperator(&tokens, i));
             }
         }
 
@@ -125,6 +121,27 @@ public:
         }
 
         while (!operators.empty()) {
+            popOperator();
+        }
+
+        // Top of 'values' contains result, return it.
+        return values.top();
+    }
+
+    void popOperator() {
+        OPERATORS op = operators.top();
+        operators.pop();
+
+        if (op == NEGATIVE || op == LOGICAL_NOT || op == OPEN_BRACKETS) {
+            if (values.empty()) {
+                throw invalid_argument("Invalid expression");
+            }
+            Expression *val = values.top();
+            values.pop();
+
+            values.push(applyOpUnary(val, op));
+        } else {
+            // Binary
             if (values.empty()) {
                 throw invalid_argument("Invalid expression");
             }
@@ -136,18 +153,12 @@ public:
             }
             Expression *val1 = values.top();
             values.pop();
-
-            char op = operators.top();
-            operators.pop();
-
-            values.push(applyOp(val1, val2, op));
+            values.push(applyOpBinary(val1, val2, op));
         }
-
-        // Top of 'values' contains result, return it.
-        return values.top();
     }
 
-    static int precedence(char op) {
+
+    int precedence(char op) {
         if (op == '+' || op == '-')
             return 1;
         if (op == '*' || op == '/')
@@ -156,20 +167,98 @@ public:
     }
 
     // Function to perform arithmetic operations.
-    static Expression *applyOp(Expression *a, Expression *b, char op) {
+    Expression *applyOpBinary(Expression *a, Expression *b, OPERATORS op) {
         switch (op) {
-            case '+':
+            case PLUS:
                 return new Plus(a, b);
-            case '-':
+            case MINUS:
                 return new Minus(a, b);
-            case '*':
+            case MULT:
                 return new Mult(a, b);
-            case '/':
+            case DIV:
                 return new Div(a, b);
+            case SMALLER_THAN:
+                return new SmallerThan(a, b);
+            case SMALLER_OR_EQUAL:
+                return new SmallerOrEqualThan(a, b);
+            case BIGGER_THAN:
+                return new BiggerThan(a, b);
+            case BIGGER_OR_EQUAL:
+                return new BiggerOrEqualThan(a, b);
+            case EQUAL:
+                return new EqualTo(a, b);
+            case NOT_EQUAL:
+                return new NotEqualTo(a, b);
             default:
-                throw invalid_argument("Expected operator");
+                throw ParserException("Invalid operator type");
         }
     }
+
+    Expression *applyOpUnary(Expression *a, OPERATORS op) {
+        switch (op) {
+            case NEGATIVE:
+                return new Neg(a);
+            case LOGICAL_NOT:
+                return new Not(a);
+            case OPEN_BRACKETS:
+                return a;
+            default:
+                throw ParserException("Invalid operator type");
+        }
+    }
+
+
+    OPERATORS getOperator(string *token, int i) {
+        bool nextIsEqual = false;
+
+        if (i + 1 < token->size()) {
+            nextIsEqual = token->at(i + 1) == '=';
+        }
+
+        switch (token->at(i)) {
+            case '+':
+                return PLUS;
+            case '-':
+                if (values.empty()) {
+                    return NEGATIVE;
+                } else {
+                    return MINUS;
+                }
+            case '/':
+                return DIV;
+            case '*':
+                return MULT;
+            case '<':
+                if (nextIsEqual) {
+                    return SMALLER_OR_EQUAL;
+                } else {
+                    return SMALLER_THAN;
+                }
+            case '>':
+                if (nextIsEqual) {
+                    return BIGGER_OR_EQUAL;
+                } else {
+                    return BIGGER_THAN;
+                }
+            case '!':
+                if (nextIsEqual) {
+                    return NOT_EQUAL;
+                } else {
+                    return LOGICAL_NOT;
+                }
+            case '=':
+                if (nextIsEqual) {
+                    return EQUAL;
+                } else {
+                    throw ParserException("Invalid operator given");
+                }
+            case '(':
+                return OPEN_BRACKETS;
+            default:
+                throw ParserException("Invalid operator given");
+        }
+    }
+
 
     static bool isChar(char c) {
         return 'A' <= c && c <= 'z';

@@ -7,16 +7,18 @@
 
 #include "../expressions/Expression.h"
 #include "Command.h"
+#include "../expressions/TokenArray.h"
+#include "../expressions/ExpressionParser.h"
 
 class ConditionParser : public Command {
-private:
-    Expression *condition;
 public:
-    ConditionParser(Expression *cond) : condition(cond) {}
+    ConditionParser() {}
 
-    bool checkCondition() const {
-        return (bool) condition->calculate();
+    Expression* readCondition() {
+        string c = TokenArray::getInstance()->next();
+        return ExpressionParser().parse(c);
     }
+
 };
 
 #endif //PROJECT_ADVANCED_CONDITIONPARSER_H

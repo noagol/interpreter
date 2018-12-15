@@ -19,7 +19,7 @@ class TokenArray {
 public:
     TokenArray() : i(0) {}
 
-    int getIndex(){
+    int getIndex() {
         return i;
     }
 
@@ -46,12 +46,29 @@ public:
         array.push_back(exp);
     }
 
-    void move(int moveBy) {
-        i += moveBy;
+    void moveBy(int index) {
+        i += index;
+    }
+
+    void moveTo(int index) {
+        i = index;
     }
 
     bool isFinished() {
         return i >= array.size();
+    }
+
+    void skipToNextEnd() {
+        string token;
+        while (!isFinished()) {
+            token = next();
+            if (token == "}") {
+                i++;
+                return;
+            }
+        }
+
+        throw ParserException("Missing closing brackets");
     }
 
     static TokenArray *getInstance() {

@@ -12,7 +12,7 @@ public:
     SmallerThan(Expression *l, Expression *r) : BinaryExpression(l, r) {}
 
     double calculate() override {
-        return getLeft()->calculate() + getRight()->calculate();
+        return getLeft()->calculate() < getRight()->calculate();
     }
 };
 

@@ -22,7 +22,7 @@ public:
         string token = TokenArray::getInstance()->next();
 
         // Parse expression
-        Expression *expression = ExpressionParser::parse(token);
+        Expression *expression = ExpressionParser().parse(token);
         int sleepTime = (int) expression->calculate();
 
         // Remove allocated memory

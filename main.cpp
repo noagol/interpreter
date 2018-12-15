@@ -10,6 +10,6 @@ using namespace std;
 
 int main() {
     InterpreterTest t = InterpreterTest();
-    t.test8();
+    t.test14();
     return 0;
 }

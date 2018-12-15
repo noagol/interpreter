@@ -24,21 +24,10 @@ public:
             cout << token.substr(1, token.size() - 2) << endl;
         } else {
             // Expression
-            Expression *expression = ExpressionParser::parse(token);
+            Expression *expression = ExpressionParser().parse(token);
             cout << expression->calculate() << endl;
             delete (expression);
         }
-//
-//        if (type == STRING_TOKEN) {
-//            Token<string> s = (Token<string>) t;
-//            cout << ((string) t->getValue()) << endl;
-//        } else if (type == DOUBLE_TOKEN) {
-//            cout << ((double) t->getValue()) << endl;
-//        } else {
-//            throw ParserException("Invalid argument for print");
-//        }
-
-
     }
 };
 
