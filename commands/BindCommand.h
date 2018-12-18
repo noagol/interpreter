@@ -2,19 +2,22 @@
 #define PROJECT_ADVANCED_BINDCOMMAND_H
 
 #include <BindTable.h>
-#include "Command.h"
 #include "../expressions/TokenArray.h"
+#include "../commands/BaseCommand.h"
 
-class BindCommand : public Command{
+
+class BindCommand : public BaseCommand {
 public:
+    BindCommand(Parser *p) : BaseCommand(p) {}
+
     void doCommand() override {
-        string path  = TokenArray::getInstance()->next();
-        if (path.at(0) != '"' || path.at(path.size()-1) != '"'){
+        string path = parser->getTokenArray()->next();
+        if (path.at(0) != '"' || path.at(path.size() - 1) != '"') {
             throw ParserException("Invalid argument to bind command");
         }
 
-        string varName = TokenArray::getInstance()->get(TokenArray::getInstance()->getIndex() - 3);
-        BindTable::getInstance()->insert(varName, path);
+        string varName = parser->getTokenArray()->getFrom(-3);
+        parser->getBindTable()->insert(varName, path);
     }
 };
 

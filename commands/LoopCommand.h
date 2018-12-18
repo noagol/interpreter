@@ -15,23 +15,22 @@
 
 class LoopCommand : public ConditionParser {
 public:
-    LoopCommand() : ConditionParser() {}
+    LoopCommand(Parser *p) : ConditionParser(p) {}
 
     void doCommand() override {
         Expression *condition = readCondition();
-        string startToken = TokenArray::getInstance()->next();
+        string startToken = parser->getTokenArray()->next();
         if (startToken != "{") {
             throw ParserException("Missing opening brackets in if command");
         }
 
-        int startPosition = TokenArray::getInstance()->getIndex();
+        int startPosition = parser->getTokenArray()->getIndex();
 
         while ((bool) condition->calculate()) {
-            TokenArray::getInstance()->moveTo(startPosition);
-            Parser parser = Parser();
-            parser.parse();
+            parser->getTokenArray()->moveTo(startPosition);
+            parser->parse();
         }
-        TokenArray::getInstance()->skipToNextEnd();
+        parser->getTokenArray()->skipToNextEnd();
 
         delete (condition);
     }

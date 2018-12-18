@@ -8,16 +8,16 @@
 #include <queue>
 #include "Expression.h"
 #include "../exceptions/ParserException.h"
+#include "../expressions/ExpressionParser.h"
 
 using namespace std;
 
 class TokenArray {
-    static TokenArray *instance;
-
+    ExpressionParser expressionParser;
     vector<string> array;
     int i;
 public:
-    TokenArray() : i(0) {}
+    TokenArray(SymbolTable *st) : i(0), expressionParser(st) {}
 
     int getIndex() {
         return i;
@@ -58,29 +58,30 @@ public:
         return i >= array.size();
     }
 
+    Expression *getExpression(const string &token) {
+        return expressionParser.parse(token);
+    }
+
+    Expression *getNextExpression() {
+        string token = next();
+        return expressionParser.parse(token);
+    }
+
+    string getFrom(int valueToAddToI) {
+        return get(getIndex() + valueToAddToI);
+    }
+
     void skipToNextEnd() {
         string token;
         while (!isFinished()) {
             token = next();
             if (token == "}") {
-                i++;
                 return;
             }
         }
 
         throw ParserException("Missing closing brackets");
     }
-
-    static TokenArray *getInstance() {
-        if (!instance) {
-            instance = new TokenArray();
-            return instance;
-        } else {
-            return instance;
-        }
-    }
 };
-
-TokenArray *TokenArray::instance = nullptr;
 
 #endif //PROJECT_ADVANCED_EXPRESSIONQUEUE_H

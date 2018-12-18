@@ -7,14 +7,15 @@
 
 #include "Command.h"
 #include "../expressions/TokenArray.h"
+#include "BaseCommand.h"
 
-class DefineVarCommand : public Command {
+class DefineVarCommand : public BaseCommand {
 public:
-    DefineVarCommand() {};
+    DefineVarCommand(Parser *p):BaseCommand(p) {};
 
     void doCommand() override {
-        string varName = TokenArray::getInstance()->next();
-        SymbolTable::getInstance()->add(varName, 0.0);
+        string varName = parser->getTokenArray()->next();
+       parser->getSymbolTable()->add(varName, 0.0);
     }
 };
 

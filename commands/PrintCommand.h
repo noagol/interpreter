@@ -6,25 +6,22 @@
 #define PROJECT_ADVANCED_PRINTCOMMAND_H
 
 #include <iostream>
-#include "Command.h"
-#include "../expressions/TokenArray.h"
-#include "../exceptions/ParserException.h"
-#include "../expressions/ExpressionParser.h"
+#include "BaseCommand.h"
 
-class PrintCommand : public Command {
+class PrintCommand : public BaseCommand {
 
 public:
-    PrintCommand() {}
+    PrintCommand(Parser *p) : BaseCommand(p) {}
 
     void doCommand() override {
-        string token = TokenArray::getInstance()->next();
+        string token = parser->getTokenArray()->next();
 
         if (token.at(0) == '\"') {
             // String
             cout << token.substr(1, token.size() - 2) << endl;
         } else {
             // Expression
-            Expression *expression = ExpressionParser().parse(token);
+            Expression *expression = parser->getTokenArray()->getExpression(token);
             cout << expression->calculate() << endl;
             delete (expression);
         }

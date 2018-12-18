@@ -5,18 +5,16 @@
 #ifndef PROJECT_ADVANCED_CONDITIONPARSER_H
 #define PROJECT_ADVANCED_CONDITIONPARSER_H
 
-#include "../expressions/Expression.h"
-#include "Command.h"
-#include "../expressions/TokenArray.h"
-#include "../expressions/ExpressionParser.h"
+#include "../interpreter/Parser.h"
+#include "../commands/BaseCommand.h"
 
-class ConditionParser : public Command {
+
+class ConditionParser : public BaseCommand {
 public:
-    ConditionParser() {}
+    ConditionParser(Parser *p) : BaseCommand(p) {}
 
-    Expression* readCondition() {
-        string c = TokenArray::getInstance()->next();
-        return ExpressionParser().parse(c);
+    Expression *readCondition() {
+        return parser->getNextExpression();
     }
 
 };

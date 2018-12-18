@@ -3,8 +3,7 @@
 
 #include "DynamicTable.h"
 #include "../commands/Command.h"
-#include "../commands/OpenServerCommand.h"
-#include "../expressions/CommandExpression.h"
+#include "../expressions/Expression.h"
 
 #define PRINT_COMMAND "print"
 #define SLEEP_COMMAND "sleep"
@@ -17,23 +16,9 @@
 
 using namespace std;
 
-class CommandTable : public DynamicTable<Expression> {
-    static CommandTable *instance;
+class CommandTable : public DynamicTable<Expression>{
 public:
-    CommandTable() {
-
-    };
-
-    static CommandTable *getInstance() {
-        if (!instance) {
-            instance = new CommandTable();
-            return instance;
-        } else {
-            return instance;
-        }
-    }
+    CommandTable() {};
 };
-
-CommandTable *CommandTable::instance = nullptr;
 
 #endif //ADVANCED_COMMANDTABLE_H

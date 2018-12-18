@@ -1,35 +1,42 @@
 #ifndef ADVANCED_PARSER_H
 #define ADVANCED_PARSER_H
 
-#include <vector>
-#include <string>
 #include "../tables/CommandTable.h"
 #include "../tables/SymbolTable.h"
-#include "../expressions/ExpressionParser.h"
+#include "../tables/BindTable.h"
+
 #include "../expressions/TokenArray.h"
 #include "../helpers/StringHelpers.h"
 
 using namespace std;
 
 class Parser {
+    CommandTable *commandTable;
+    BindTable *bindTable;
+    SymbolTable *symbolTable;
+    TokenArray *tokenArray;
 public:
-    Parser() {}
+    Parser(TokenArray *ta, CommandTable *ct, BindTable *bt, SymbolTable *st) :
+            commandTable(ct),
+            bindTable(bt),
+            symbolTable(st),
+            tokenArray(ta) {}
 
     void parse() {
-        while (!TokenArray::getInstance()->isFinished() && TokenArray::getInstance()->peek() != "}") {
+        while (!tokenArray->isFinished() && tokenArray->peek() != "}") {
             parseCommand();
         }
     }
 
     bool parseCommand() {
-        string token = TokenArray::getInstance()->next();
+        string token = tokenArray->next();
         if (isCommand(token)) {
-            Expression *command = CommandTable::getInstance()->get(token);
+            Expression *command = commandTable->get(token);
             command->calculate();
         } else if (isVariable(token)) {
-            string nextToken = TokenArray::getInstance()->next();
+            string nextToken = tokenArray->next();
             if (nextToken == "=") {
-                Expression *command = CommandTable::getInstance()->get(nextToken);
+                Expression *command = commandTable->get(nextToken);
                 command->calculate();
             } else {
                 throw ParserException(format("Undefined command given: %s %s", token, nextToken));
@@ -39,13 +46,39 @@ public:
         }
     }
 
+    Expression *getNextExpression() {
+        return tokenArray->getNextExpression();
+    }
+
 
     bool isCommand(string &key) {
-        return CommandTable::getInstance()->exists(key);
+        return commandTable->exists(key);
     }
 
     bool isVariable(string &key) {
-        return SymbolTable::getInstance()->exists(key);
+        return symbolTable->exists(key);
+    }
+
+    CommandTable *getCommandTable() {
+        return commandTable;
+    }
+
+    BindTable *getBindTable() {
+        return bindTable;
+    }
+
+    SymbolTable *getSymbolTable() {
+        return symbolTable;
+    }
+
+    TokenArray *getTokenArray() {
+        return tokenArray;
+    }
+
+    ~Parser() {
+        delete commandTable;
+        delete symbolTable;
+        delete bindTable;
     }
 };
 

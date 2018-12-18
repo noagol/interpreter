@@ -41,9 +41,4 @@ public:
     }
 
 };
-
-//template<class T>
-//T DynamicTable<T>::table;
-//template <class T> typename DynamicTable<T>::table table;
-
 #endif //ADVANCED_TABLE_H

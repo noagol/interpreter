@@ -13,38 +13,42 @@
 
 using namespace std;
 
-static bool isWhitespace(char c) {
-    return c == ' ' || c == '\n' || c == '\r' || c == '\t';
-}
+class Lexer {
+    TokenArray* tokenArray;
+public:
+    Lexer(TokenArray *tArray) : tokenArray(tArray) {}
 
-static void lexer(const string &input) {
-//    vector<string> split;
-    string token;
-    bool stringMode = false;
-    unsigned long int i;
-    for (i = 0; i < input.length(); i++) {
-        if (isWhitespace(input.at(i)) && !stringMode) {
-            if (!token.empty()) {
-                TokenArray::getInstance()->add(token);
-//                split.push_back(token);
-                token = "";
+    void lexer(const string &input) {
+        string token;
+        bool stringMode = false;
+        unsigned long int i;
+        for (i = 0; i < input.length(); i++) {
+            if (isWhitespace(input.at(i)) && !stringMode) {
+                if (!token.empty()) {
+                    tokenArray->add(token);
+                    token = "";
+                }
+            } else if (input.at(i) == '"') {
+                stringMode = !stringMode;
+                token.push_back('"');
+            } else {
+                token.push_back(input.at(i));
             }
-        } else if (input.at(i) == '"') {
-            stringMode = !stringMode;
-            token.push_back('"');
-        } else {
-            token.push_back(input.at(i));
+        }
+
+        if (stringMode) {
+            throw LexerException("String has not been terminated");
+        }
+        if (!token.empty()) {
+            tokenArray->add(token);
         }
     }
 
-    if (stringMode) {
-        throw LexerException("String has not been terminated");
+    bool isWhitespace(char c) {
+        return c == ' ' || c == '\n' || c == '\r' || c == '\t';
     }
-    if (!token.empty()) {
-        TokenArray::getInstance()->add(token);
-    }
-//    return split;
-}
+};
+
 
 //static vector<string> lexer(string const &input) {
 //    istringstream buffer(input);

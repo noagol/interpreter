@@ -11,12 +11,13 @@
 using namespace std;
 
 class Var : public Expression {
+    SymbolTable *symbolTable;
     string name;
 public:
-    Var(string n) : name(n) {}
+    Var(const string& n, SymbolTable *st) : name(n), symbolTable(st) {}
 
     double calculate() override {
-        return SymbolTable::getInstance()->get(name);
+        return symbolTable->get(name);
     }
 };
 

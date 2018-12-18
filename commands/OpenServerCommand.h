@@ -2,25 +2,24 @@
 #define ADVANCED_OPENSERVERCOMMAND_H
 
 #include <unistd.h>
-#include <stdio.h>
 #include <sys/socket.h>
 #include <stdlib.h>
 #include <netinet/in.h>
-#include <string.h>
-#include "Command.h"
 #include <pthread.h>
-#include "../expressions/ExpressionParser.h"
-#include "../expressions/TokenArray.h"
+#include "BaseCommand.h"
 
-class OpenServerCommand : public Command {
+
+class OpenServerCommand : public BaseCommand {
 public:
+    OpenServerCommand(Parser *p) : BaseCommand(p) {}
+
     void doCommand() override {
         // Extract params
-        Expression *portExp = ExpressionParser().parse(TokenArray::getInstance()->next());
+        Expression *portExp = parser->getNextExpression();
         int port = (int) portExp->calculate();
         delete (portExp);
 
-        Expression *hzExp = ExpressionParser().parse(TokenArray::getInstance()->next());
+        Expression *hzExp = parser->getNextExpression();
         int timesPerSecond = (int) hzExp->calculate();
         delete (hzExp);
 
@@ -83,7 +82,7 @@ public:
 
     }
 
-//
+
 //    void runServer(int port, int timesPerSecond) {
 //        int server;
 //        struct sockaddr_in address;

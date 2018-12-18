@@ -13,8 +13,6 @@
 using namespace std;
 
 class BindTable {
-    static BindTable *instance;
-
     map<string, string> variableToPath;
     map<string, vector<string>> pathToVariables;
 public:
@@ -55,17 +53,17 @@ public:
         return pathToVariables.find(pathName) != pathToVariables.end();
     }
 
-    static BindTable *getInstance() {
-        if (!instance) {
-            instance = new BindTable();
-            return instance;
-        } else {
-            return instance;
-        }
-    }
+//    static BindTable *getInstance() {
+//        if (!instance) {
+//            instance = new BindTable();
+//            return instance;
+//        } else {
+//            return instance;
+//        }
+//    }
 };
 
-BindTable *BindTable::instance = nullptr;
+//BindTable *BindTable::instance = nullptr;
 
 
 #endif //PROJECT_ADVANCED_BINDTABLE_H

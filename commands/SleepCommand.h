@@ -4,8 +4,7 @@
 
 #ifndef PROJECT_ADVANCED_SLEEPCOMMAND_H
 
-#include "Command.h"
-#include "../expressions/TokenArray.h"
+#include "BaseCommand.h"
 #include <chrono>
 #include <thread>
 #include <stdexcept>
@@ -13,16 +12,13 @@
 #define PROJECT_ADVANCED_SLEEPCOMMAND_H
 
 
-class SleepCommand : public Command {
+class SleepCommand : public BaseCommand {
 public:
-    SleepCommand() {}
+    SleepCommand(Parser* p):BaseCommand(p) {}
 
     void doCommand() override {
-        // Get sleep argument
-        string token = TokenArray::getInstance()->next();
-
         // Parse expression
-        Expression *expression = ExpressionParser().parse(token);
+        Expression *expression = parser->getNextExpression();
         int sleepTime = (int) expression->calculate();
 
         // Remove allocated memory

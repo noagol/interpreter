@@ -8,22 +8,25 @@
 #include <CommandTable.h>
 #include "Command.h"
 #include "../expressions/TokenArray.h"
+#include "BaseCommand.h"
 
-class AssignmentCommand : public Command {
+class AssignmentCommand : public BaseCommand {
 public:
+    AssignmentCommand(Parser *p) : BaseCommand(p) {};
+
     void doCommand() override {
-        string varName = TokenArray::getInstance()->get(TokenArray::getInstance()->getIndex() - 2);
-        if (!SymbolTable::getInstance()->exists(varName)) {
+        string varName = parser->getTokenArray()->getFrom(-2);
+        if (!parser->getSymbolTable()->exists(varName)) {
             throw ParserException("Variable is not defined");
         }
 
-        string token = TokenArray::getInstance()->next();
-        if (CommandTable::getInstance()->exists(token)) {
-            Expression *command = CommandTable::getInstance()->get(token);
+        string token = parser->getTokenArray()->next();
+        if (parser->getCommandTable()->exists(token)) {
+            Expression *command = parser->getCommandTable()->get(token);
             command->calculate();
         } else {
-            Expression *expression = ExpressionParser().parse(token);
-            SymbolTable::getInstance()->add(varName, expression->calculate());
+            Expression *expression = parser->getTokenArray()->getExpression(token);
+            parser->getSymbolTable()->add(varName, expression->calculate());
             delete (expression);
         }
     }

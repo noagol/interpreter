@@ -12,21 +12,20 @@
 
 class IfCommand : public ConditionParser {
 public:
-    IfCommand() : ConditionParser() {}
+    IfCommand(Parser *p) : ConditionParser(p) {}
 
     void doCommand() override {
         Expression *condition = readCondition();
-        string startToken = TokenArray::getInstance()->next();
+        string startToken = parser->getTokenArray()->next();
         if (startToken != "{") {
             throw ParserException("Missing opening brackets in if command");
         }
 
         if ((bool) condition->calculate()) {
-            Parser parser = Parser();
-            parser.parse();
-        } else {
-            TokenArray::getInstance()->skipToNextEnd();
+            parser->parse();
         }
+
+        parser->getTokenArray()->skipToNextEnd();
 
         delete (condition);
     }

@@ -31,12 +31,11 @@ enum OPERATORS {
 };
 
 class ExpressionParser {
-    // stack to store integer values.
+    SymbolTable *symbolTable;
     stack<Expression *> values;
-    // stack to store operators.
     stack<OPERATORS> operators;
 public:
-    ExpressionParser() : values(), operators() {}
+    ExpressionParser(SymbolTable *st) : symbolTable(st), values(), operators() {}
 
     Expression *parse(string tokens) {
         unsigned long int i;
@@ -45,28 +44,19 @@ public:
         // Iterate through the string
         for (i = 0; i < tokens.length(); i++) {
             if (tokens[i] == ' ') {
-                // Current token is a whitespace,
-                // skip it.
                 if (!var.empty()) {
-                    values.push(new Var(var));
+                    values.push(new Var(var, symbolTable));
                     var = "";
                 }
             } else if (tokens[i] == '(') {
-                // Current token is an opening
-                // brace, push it to operators stack
                 operators.push(OPEN_BRACKETS);
             } else if (isdigit(tokens[i])) {
-                // Current token is a number, push
-                // it to stack for numbers.
                 if (!var.empty()) {
                     var.push_back(tokens[i]);
                     continue;
                 }
 
                 double val = 0;
-
-                // There may be more than one
-                // digits in number.
                 while (i < tokens.length() &&
                        isdigit(tokens[i])) {
                     val = (val * 10) + (tokens[i] - '0');
@@ -74,15 +64,30 @@ public:
                 }
                 i--;
                 values.push(new Number(val));
+            } else if (tokens[i] == '-' && i + 1 < tokens.size() && isdigit(tokens[i + 1])) {
+                i++;
+                if (!var.empty()) {
+                    var.push_back(tokens[i]);
+                    continue;
+                }
+
+                double val = 0;
+
+                while (i < tokens.length() &&
+                       isdigit(tokens[i])) {
+                    val = (val * 10) + (tokens[i] - '0');
+                    i++;
+                }
+                i--;
+                values.push(new Number(val * -1));
             } else if (tokens[i] == ')') {
-                // Closing brace encountered, solve
-                // entire brace.
                 while (!operators.empty() && operators.top() != OPEN_BRACKETS) {
                     popOperator();
                 }
 
-                // pop opening brace.
-                operators.pop();
+                if (!operators.empty()) {
+                    operators.pop();
+                }
             } else if (isChar(tokens.at(i))) {
                 if (var.empty()) {
                     var = tokens.at(i);
@@ -90,33 +95,23 @@ public:
                     var.push_back(tokens.at(i));
                 }
             } else {
-                // Current token is an operator.
-                // While top of 'ops' has same or greater
-                // precedence to current token, which
-                // is an operator. Apply operator on top
-                // of 'ops' to top two elements in values stack.
                 if (!var.empty()) {
-                    values.push(new Var(var));
+                    values.push(new Var(var, symbolTable));
                     var = "";
                 }
 
+                OPERATORS op = getOperator(&tokens, i);
                 while (!operators.empty() && precedence(operators.top())
-                                             >= precedence(tokens[i])) {
+                                             >= precedence(op)) {
                     popOperator();
                 }
 
-                // Push current token to 'ops'.
-                operators.push(getOperator(&tokens, i));
+                operators.push(op);
             }
         }
 
-
-        // Entire expression has been parsed at this
-        // point, apply remaining ops to remaining
-        // values.
-
         if (!var.empty()) {
-            values.push(new Var(var));
+            values.push(new Var(var, symbolTable));
             var = "";
         }
 
@@ -124,7 +119,6 @@ public:
             popOperator();
         }
 
-        // Top of 'values' contains result, return it.
         return values.top();
     }
 
@@ -158,11 +152,13 @@ public:
     }
 
 
-    int precedence(char op) {
-        if (op == '+' || op == '-')
+    int precedence(OPERATORS op) {
+        if (op == PLUS || op == MINUS)
             return 1;
-        if (op == '*' || op == '/')
+        if (op == MULT || op == DIV)
             return 2;
+//        if (op == NEGATIVE)
+//            return 3;
         return 0;
     }
 
