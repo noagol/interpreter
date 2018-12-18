@@ -13,6 +13,8 @@
 #define BIND_COMMAND "bind"
 #define IF_COMMAND "if"
 #define WHILE_COMMAND "while"
+#define CONNECT_COMMAND "connect"
+
 
 using namespace std;
 

@@ -14,7 +14,7 @@
 using namespace std;
 
 class Lexer {
-    TokenArray* tokenArray;
+    TokenArray *tokenArray;
 public:
     Lexer(TokenArray *tArray) : tokenArray(tArray) {}
 
