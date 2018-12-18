@@ -41,7 +41,7 @@ public:
     }
 
     void test4() {
-        string input = "openDataServer 5402 10";
+        string input = "openDataServer 5402 10 sleep 100000";
         run(input);
     }
 

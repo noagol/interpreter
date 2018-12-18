@@ -60,26 +60,27 @@ class OpenServerCommand : public BaseCommand {
 
         listen(sockfd, 5);
         clilen = sizeof(cli_addr);
-
-        /* Accept actual connection from the client */
         newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
 
-        if (newsockfd < 0) {
-            perror("ERROR on accept");
-            exit(1);
+        while (true) {
+            /* Accept actual connection from the client */
+
+            if (newsockfd < 0) {
+                perror("ERROR on accept");
+                exit(1);
+            }
+
+            /* If connection is established then start communicating */
+            bzero(buffer, 256);
+            n = read(newsockfd, buffer, 255);
+
+            if (n < 0) {
+                perror("ERROR reading from socket");
+                exit(1);
+            }
+
+            printf("Here is the message: %s\n", buffer);
         }
-
-        /* If connection is established then start communicating */
-        bzero(buffer, 256);
-        n = read(newsockfd, buffer, 255);
-
-        if (n < 0) {
-            perror("ERROR reading from socket");
-            exit(1);
-        }
-
-        printf("Here is the message: %s\n", buffer);
-
     }
 
 
