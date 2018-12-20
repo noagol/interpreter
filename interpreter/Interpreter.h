@@ -35,7 +35,35 @@ public:
     }
 
     void executeFromFile(const string &path) {
+        ifstream myFile(path);
+        string line;
+        if (!myFile.good()) {
+            throw runtime_error("File not found");
+        }
 
+        if (myFile.is_open()) {
+            line = readCodeBlock(myFile);
+            while (!line.empty()) {
+                excuteFromLine(line);
+                line = readCodeBlock(myFile);
+            }
+            myFile.close();
+        } else {
+            throw runtime_error("Unable to open file");
+        }
+    }
+
+    string readCodeBlock(ifstream &myFile) {
+        string line;
+        string buffer;
+        while (getline(myFile, buffer)) {
+            line += buffer;
+            if (startswith(line, "while") || startswith(line, "if")) {
+                line += readCodeBlock(myFile);
+            }
+        }
+
+        return line;
     }
 
     void excuteFromLine(const string &line) {

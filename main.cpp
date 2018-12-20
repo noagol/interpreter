@@ -23,9 +23,13 @@ int main() {
 //    t.test11();
 //    t.test12();
 //    t.test13();
-    t.test14();
-    t.test15();
-    t.test16();
+//    t.test14();
+//    t.test15();
+//    t.test16();
+
+//    t.testFile1();
+//    t.testFile2();
+    t.testFile3();
 
 
     return 0;

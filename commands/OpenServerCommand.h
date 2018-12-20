@@ -7,10 +7,11 @@
 #include <netinet/in.h>
 #include <pthread.h>
 #include "BaseCommand.h"
+#include <string>
 
 
 class OpenServerCommand : public BaseCommand {
-    public:
+public:
     OpenServerCommand(Parser *p) : BaseCommand(p) {}
 
     void doCommand() override {
@@ -24,11 +25,11 @@ class OpenServerCommand : public BaseCommand {
         delete (hzExp);
 
         // Run the server
-        thread serverThread(runServer, port, timesPerSecond);
+        thread serverThread(runServer, port, timesPerSecond, parser->getBindTable(), parser->getSymbolTable());
         serverThread.detach();
     }
 
-    static void runServer(int port, int timesPerSecond) {
+    static void runServer(int port, int timesPerSecond, BindTable *bindTable, SymbolTable *symbolTable) {
         int sockfd, newsockfd, portno, clilen;
         char buffer[256];
         struct sockaddr_in serv_addr, cli_addr;
@@ -80,8 +81,37 @@ class OpenServerCommand : public BaseCommand {
                 exit(1);
             }
 
-            printf("Here is the message: %s\n", buffer);
+            updateVariables(string(buffer), bindTable, symbolTable);
         }
+    }
+
+    static void updateVariables(string updateData, BindTable *bindTable, SymbolTable *symbolTable) {
+        unsigned long int newLineIndex = updateData.find('\n');
+        if(newLineIndex != updateData.size()){
+            // New line is there
+            vector<string> dataSplit = split(&updateData, '\n');
+            updateData = dataSplit.at(0);
+        }
+
+        vector<string> sp = split(&updateData, ',');
+
+        string path;
+        vector<string> variables;
+        vector<string>::iterator it;
+        double value;
+        int i;
+        for (i = 0; i < 23; i++) {
+            path = bindTable->getPathByIndex(i);
+            if (bindTable->pathExists(path)) {
+                value = stod(sp.at(i));
+                variables = bindTable->getVariablesByPath(path);
+                for (it = variables.begin(); it != variables.end(); it++) {
+                    symbolTable->update(*it, value);
+                }
+            }
+        }
+
+
     }
 
 

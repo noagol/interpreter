@@ -16,7 +16,7 @@ public:
     void doCommand() override {
         string token = parser->getTokenArray()->next();
 
-        if (token.at(0) == '\"'&& token.at(token.size())== '\"'){
+        if (token.at(0) == '\"' && token.at(token.size() - 1) == '\"') {
             // String
             cout << token.substr(1, token.size() - 2) << endl;
         } else {

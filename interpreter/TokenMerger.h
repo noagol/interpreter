@@ -58,7 +58,7 @@ public:
             } else if (this->currentToken.getType() == BINARY_OPERATOR) {
                 // Binary operators - e.g. * + - ...
                 if (this->lastToken.getType() == NUMBER || this->lastToken.getType() == NAME ||
-                        lastToken.getType() == START_OPERATOR || lastToken.getType() == END_OPERATOR) {
+                    lastToken.getType() == START_OPERATOR || lastToken.getType() == END_OPERATOR) {
                     expression += this->currentToken.getValue();
                 } else {
                     throw LexerException("Binary operator after not a number or variable");
@@ -85,14 +85,7 @@ public:
                     } else {
                         throw LexerException("Assign to an expression");
                     }
-                }
-//                else if (lastToken.getType() == END_OPERATOR || lastToken.getType() == BINARY_OPERATOR) {
-//                    // Expression ended
-//                    pos--;
-//                    updateTokens();
-//                    return expression;
-//                }
-                else {
+                } else {
                     // Add to expression
                     expression += this->currentToken.getValue();
                 }
@@ -125,7 +118,8 @@ public:
 
     bool isExpressionTerminator(Token &token) {
         return token.getType() == NUMBER || token.getType() == NAME ||
-               token.getType() == END_OF_INPUT || token.getType() == STRING;
+               token.getType() == END_OF_INPUT || token.getType() == STRING ||
+               token.getType() == START_CODE_BLOCK || token.getType() == END_CODE_BLOCK;
     }
 
     Token getFromOffset(int i) {

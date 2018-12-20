@@ -16,8 +16,9 @@ public:
             throw ParserException("Invalid argument to bind command");
         }
 
-        string varName = parser->getTokenArray()->getFrom(-3);
-        parser->getBindTable()->insert(varName, path);
+        string varName = parser->getTokenArray()->getFrom(-4);
+
+        parser->getBindTable()->insert(varName, path.substr(1, path.size() - 2));
     }
 };
 

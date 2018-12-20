@@ -1,0 +1,10 @@
+var x = 5
+var i   = 1
+print 5
+sleep 1000
+print "after sleep"
+while x * 5 + 1<100{
+    print i
+    x=x+2
+    i= i + 1
+}

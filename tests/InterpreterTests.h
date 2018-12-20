@@ -132,6 +132,22 @@ public:
         run(input);
     }
 
+    void testFile1(){
+        Interpreter interpreter = Interpreter();
+        interpreter.executeFromFile("../tests/files/simple.txt");
+    }
+
+
+    void testFile2(){
+        Interpreter interpreter = Interpreter();
+        interpreter.executeFromFile("../tests/files/advanced.txt");
+    }
+
+    void testFile3(){
+        Interpreter interpreter = Interpreter();
+        interpreter.executeFromFile("../tests/files/main_example.txt");
+    }
+
 };
 
 #endif //PROJECT_ADVANCED_INTERPRETERTESTS_H

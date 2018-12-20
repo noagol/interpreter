@@ -6,6 +6,7 @@
 #define PROJECT_ADVANCED_PRIMITIVETABLE_H
 
 #include <map>
+#include "../helpers/StringHelpers.h"
 
 using namespace std;
 
@@ -19,6 +20,14 @@ public:
 
     void add(string &key, T value) {
         table[key] = value;
+    }
+
+    void update(string &key, T v) {
+        if (!exists(key)) {
+            throw invalid_argument(format("Unable to update missing key %s", key));
+        } else {
+            table[key] = v;
+        }
     }
 
     T get(string &key) {
