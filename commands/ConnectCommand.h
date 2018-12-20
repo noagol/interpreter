@@ -9,6 +9,9 @@
 #include <netdb.h>
 #include "BaseCommand.h"
 
+#define RETRIES_COUNT 100
+#define RETRIES_SLEEP 2
+
 #define PROJECT_ADVANCED_CONNECTCOMMAND_H
 
 
@@ -22,18 +25,15 @@ public:
         Expression *portExp = parser->getNextExpression();
         int port = (int) portExp->calculate();
         delete (portExp);
-   //     runClient(ip, port);
 
-        thread serverThread(runClient, ip, port);
-        serverThread.detach();
+        thread clientThread(runClient, ip, port, parser->getSymbolTable(), parser->getBindTable());
+        clientThread.detach();
     }
 
-    static void runClient(string ip, int port) {
+    static void runClient(string ip, int port, SymbolTable *symbolTable, BindTable *bindTable) {
         int sockfd, portno, n;
         struct sockaddr_in serv_addr;
         struct hostent *server;
-
-        char buffer[256];
 
         /* Create a socket point */
         sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -46,48 +46,57 @@ public:
         server = gethostbyname(ip.c_str());
 
         if (server == NULL) {
-            fprintf(stderr,"ERROR, no such host\n");
+            fprintf(stderr, "ERROR, no such host\n");
             exit(0);
         }
 
         bzero((char *) &serv_addr, sizeof(serv_addr));
         serv_addr.sin_family = AF_INET;
-        bcopy((char *)server->h_addr, (char *)&serv_addr.sin_addr.s_addr, server->h_length);
+        bcopy((char *) server->h_addr, (char *) &serv_addr.sin_addr.s_addr, server->h_length);
         serv_addr.sin_port = htons(port);
 
         /* Now connect to the server */
-        if (connect(sockfd, (struct sockaddr*)&serv_addr, sizeof(serv_addr)) < 0) {
-            perror("ERROR connecting");
+        int tries = 0;
+
+        while (tries < RETRIES_COUNT) {
+            if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) >= 0) {
+                break;
+            }
+            sleep(RETRIES_SLEEP);
+            tries++;
+        }
+        // If we were unable to connect
+        if (tries == RETRIES_COUNT - 1) {
+            perror("Unable to connect");
             exit(1);
         }
 
-        /* Now ask for a message from the user, this message
-           * will be read by server
-        */
-        while (true){
-            printf("Please enter the message: ");
-            bzero(buffer,256);
-            fgets(buffer,255,stdin);
-            buffer[strlen(buffer) - 1] = '\r';
-            buffer[strlen(buffer)] = '\n';
-            /* Send message to the server */
-            n = write(sockfd, buffer, strlen(buffer));
 
-            if (n < 0) {
-                perror("ERROR writing to socket");
-                exit(1);
+        vector<string> changes;
+        vector<string>::iterator it;
+        string updateMessage;
+        while (true) {
+            if (symbolTable->areThereAnyChanges()) {
+                changes = symbolTable->getChangedKeys();
+
+                for (it = changes.begin(); it != changes.end(); it++) {
+                    if (bindTable->variableExists(*it)) {
+                        updateMessage = format("set %s %f\r\n", bindTable->getPathByVariable(*it),
+                                               symbolTable->get(*it));
+                        n = write(sockfd, updateMessage.c_str(), updateMessage.size());
+
+                        // Check if message sent
+                        if (n < 0) {
+                            perror("ERROR writing to socket");
+                            exit(1);
+                        }
+                    }
+                }
             }
 
-            /* Now read server response */
-//            bzero(buffer,256);
-//            n = read(sockfd, buffer, 255);
-//
-//            if (n < 0) {
-//                perror("ERROR reading from socket");
-//                exit(1);
-//            }
-//
-//            printf("%s\n",buffer);
+            this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 250));
+
+
         }
 
     }

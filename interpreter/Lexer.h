@@ -25,7 +25,7 @@ class Lexer {
 
 public:
     Lexer(TokenArray *ta, const string &inputStr) : tokenArray(ta), input(inputStr), pos(0),
-                                                       currentToken(), lastToken() {
+                                                    currentToken(), lastToken() {
         currentChar = inputStr.at(pos);
     }
 
@@ -41,7 +41,9 @@ public:
         while (this->currentChar != '\0') {
             lastToken = currentToken;
             currentToken = getNextToken();
-            tokens->push_back(currentToken);
+            if (currentToken.getType() != END_OF_INPUT) {
+                tokens->push_back(currentToken);
+            }
         }
         return tokens;
     }
@@ -153,8 +155,22 @@ public:
 
             // Handle numbers
             if (isdigit(this->currentChar)) {
+                int i = 0;
                 string token = readInteger();
-                return Token(NUMBER, token);
+                while (currentChar == '.') {
+                    i++;
+                    token += ".";
+                    advance();
+                    token += readInteger();
+                }
+
+                if (i == 0 || i == 1) {
+                    // Integer or double
+                    return Token(NUMBER, token);
+                } else {
+                    // Probably ip
+                    return Token(STRING, token);
+                }
             }
 
             // Handle variables and commands
@@ -198,6 +214,7 @@ public:
             throw LexerException(format("Unknown format given: %s", this->input));
         }
 
+        return Token(END_OF_INPUT, "");
     }
 
     bool isStartOrEnd(char c) {

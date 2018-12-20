@@ -17,7 +17,7 @@ class InterpreterTest {
 public:
     void run(string &input) {
         Interpreter interpreter = Interpreter();
-        interpreter.excuteFromLine(input);
+        interpreter.executeFromLine(input);
     }
 
     void test1() {
@@ -132,18 +132,28 @@ public:
         run(input);
     }
 
-    void testFile1(){
+    void test18() {
+        string input = "var rudder = 1 if rudder == 1 { print \"a\" }";
+        run(input);
+    }
+
+    void testFile1() {
         Interpreter interpreter = Interpreter();
         interpreter.executeFromFile("../tests/files/simple.txt");
     }
 
 
-    void testFile2(){
+    void testFile2() {
         Interpreter interpreter = Interpreter();
         interpreter.executeFromFile("../tests/files/advanced.txt");
     }
 
-    void testFile3(){
+    void testFile3() {
+        Interpreter interpreter = Interpreter();
+        interpreter.executeFromFile("../tests/files/rudder_movement.txt");
+    }
+
+    void testFile4() {
         Interpreter interpreter = Interpreter();
         interpreter.executeFromFile("../tests/files/main_example.txt");
     }

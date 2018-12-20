@@ -42,10 +42,10 @@ public:
         }
 
         if (myFile.is_open()) {
-            line = readCodeBlock(myFile);
+            line = readLines(myFile);
             while (!line.empty()) {
-                excuteFromLine(line);
-                line = readCodeBlock(myFile);
+                executeFromLine(line);
+                line = readLines(myFile);
             }
             myFile.close();
         } else {
@@ -53,11 +53,26 @@ public:
         }
     }
 
+    string readLines(ifstream &myFile) {
+        string line;
+
+        getline(myFile, line);
+
+        if (startswith(line, "while") || startswith(line, "if")) {
+            line += readCodeBlock(myFile);
+        }
+
+        return line;
+    }
+
     string readCodeBlock(ifstream &myFile) {
         string line;
         string buffer;
         while (getline(myFile, buffer)) {
             line += buffer;
+            if (endswith(strip(buffer), "}")) {
+                return line;
+            }
             if (startswith(line, "while") || startswith(line, "if")) {
                 line += readCodeBlock(myFile);
             }
@@ -66,7 +81,7 @@ public:
         return line;
     }
 
-    void excuteFromLine(const string &line) {
+    void executeFromLine(const string &line) {
         Lexer(tokenArray, line).lex();
         parser->parse();
     }

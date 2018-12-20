@@ -204,11 +204,11 @@ public:
     }
 
 
-    OPERATORS getOperator(string *token, int i) {
+    OPERATORS getOperator(string *token, unsigned long int& i) {
         bool nextIsEqual = false;
 
         if (i + 1 < token->size()) {
-            nextIsEqual = token->at(i + 1) == '=';
+            nextIsEqual = (token->at(i + 1) == '=');
         }
 
         switch (token->at(i)) {
@@ -226,24 +226,28 @@ public:
                 return MULT;
             case '<':
                 if (nextIsEqual) {
+                    i++;
                     return SMALLER_OR_EQUAL;
                 } else {
                     return SMALLER_THAN;
                 }
             case '>':
                 if (nextIsEqual) {
+                    i++;
                     return BIGGER_OR_EQUAL;
                 } else {
                     return BIGGER_THAN;
                 }
             case '!':
                 if (nextIsEqual) {
+                    i++;
                     return NOT_EQUAL;
                 } else {
                     return LOGICAL_NOT;
                 }
             case '=':
                 if (nextIsEqual) {
+                    i++;
                     return EQUAL;
                 } else {
                     throw ParserException("Invalid operator given");

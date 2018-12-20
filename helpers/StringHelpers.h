@@ -50,9 +50,20 @@ std::string format(const char *fmt, Args... args) {
 }
 
 
-bool startswith(const string &base, const string &prefix) {
+bool endswith(const string base, const string postfix) {
+    if (base.size() < postfix.size()){
+        return false;
+    }
+    return !base.compare(base.size() - postfix.size() - 1, base.size() - 1, postfix);
+}
+
+bool startswith(const string base, const string prefix) {
+    if (base.size() < prefix.size()){
+        return false;
+    }
     return !base.compare(0, prefix.size(), prefix);
 }
+
 
 static vector<string> split(string *str, char delimeter) {
     unsigned int i = 0;
@@ -67,6 +78,10 @@ static vector<string> split(string *str, char delimeter) {
     l.push_back(str->substr(a, i));
 
     return l;
+}
+
+string strip(string s) {
+
 }
 
 #endif //PROJECT_ADVANCED_STRINGHELPERS_H

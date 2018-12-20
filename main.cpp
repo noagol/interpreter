@@ -26,6 +26,9 @@ int main() {
 //    t.test14();
 //    t.test15();
 //    t.test16();
+//    t.test17();
+//    t.test18();
+
 
 //    t.testFile1();
 //    t.testFile2();
