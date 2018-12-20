@@ -73,10 +73,17 @@ public:
 
     void skipToNextEnd() {
         string token;
+        int numberOfOpeners = 0;
         while (!isFinished()) {
             token = next();
-            if (token == "}") {
+            if (token == "{") {
+                numberOfOpeners++;
+            } else if (token == "}" && numberOfOpeners == 0) {
                 return;
+            } else if (token == "}" && numberOfOpeners > 0) {
+                numberOfOpeners--;
+            } else if (numberOfOpeners < 0) {
+                throw invalid_argument("Bad implementation on skip to end");
             }
         }
 

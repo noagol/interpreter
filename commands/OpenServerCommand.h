@@ -24,10 +24,11 @@ public:
         delete (hzExp);
 
         // Run the server
-        runServer(port, timesPerSecond);
+        thread serverThread(runServer, port, timesPerSecond);
+        serverThread.detach();
     }
 
-    void runServer(int port, int timesPerSecond) {
+    static void runServer(int port, int timesPerSecond) {
         int sockfd, newsockfd, portno, clilen;
         char buffer[256];
         struct sockaddr_in serv_addr, cli_addr;

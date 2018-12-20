@@ -17,9 +17,9 @@
 #include "Lexer.h"
 #include "Parser.h"
 #include "../expressions/CommandExpression.h"
+#include "Lexer.h"
 
 class Interpreter {
-    Lexer *lexer;
     Parser *parser;
     TokenArray *tokenArray;
     CommandTable *commandTable;
@@ -29,7 +29,6 @@ public:
     Interpreter() : commandTable(new CommandTable()),
                     bindTable(new BindTable()), symbolTable(new SymbolTable()) {
         tokenArray = new TokenArray(symbolTable);
-        lexer = new Lexer(tokenArray);
         parser = new Parser(tokenArray, commandTable, bindTable, symbolTable);
         initialize();
     }
@@ -39,12 +38,11 @@ public:
     }
 
     void excuteFromLine(const string &line) {
-        lexer->lexer(line);
+        Lexer(tokenArray, line).lex();
         parser->parse();
     }
 
     ~Interpreter() {
-        delete (lexer);
         delete (parser);
         delete (tokenArray);
     }

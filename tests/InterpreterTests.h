@@ -21,8 +21,8 @@ public:
     }
 
     void test1() {
-        string input = "sleep 5000";
-        cout << "Start sleep" << endl;
+        string input = "sleep 2000";
+        cout << "2 seconds sleep" << endl;
         run(input);
         cout << "End sleep" << endl;
     }
@@ -72,7 +72,7 @@ public:
 
 
     void test9() {
-        string input = "var x = 5 if x<6 { print 100 } print \"end\"";
+        string input = "var x = 5 if x < 6 { print 100 } print \"end\"";
         cout << "100 end expected: " << endl;
         run(input);
 

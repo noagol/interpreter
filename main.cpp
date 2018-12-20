@@ -13,7 +13,7 @@ int main() {
 //    t.test1();
 //    t.test2();
 //    t.test3();
-    t.test4();
+////    t.test4();
 //    t.test5();
 //    t.test6();
 //    t.test7();
@@ -23,9 +23,9 @@ int main() {
 //    t.test11();
 //    t.test12();
 //    t.test13();
-//    t.test14();
-//    t.test15();
-//    t.test16();
+    t.test14();
+    t.test15();
+    t.test16();
 
 
     return 0;
