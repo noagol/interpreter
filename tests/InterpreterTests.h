@@ -126,6 +126,12 @@ public:
         run(input);
         cout << endl;
     }
+
+    void test17() {
+        string input = "connect 127.0.0.1 5400";
+        run(input);
+    }
+
 };
 
 #endif //PROJECT_ADVANCED_INTERPRETERTESTS_H

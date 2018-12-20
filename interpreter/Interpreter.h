@@ -13,6 +13,7 @@
 #include <BindCommand.h>
 #include <DefineVarCommand.h>
 #include <OpenServerCommand.h>
+#include <ConnectCommand.h>
 #include "../expressions/TokenArray.h"
 #include "Lexer.h"
 #include "Parser.h"
@@ -62,6 +63,8 @@ private:
         ct->add(ASSIGNMENT_COMMAND, new CommandExpression(new AssignmentCommand(parser)));
         ct->add(IF_COMMAND, new CommandExpression(new IfCommand(parser)));
         ct->add(WHILE_COMMAND, new CommandExpression(new LoopCommand(parser)));
+        ct->add(CONNECT_COMMAND, new CommandExpression(new ConnectCommand(parser)));
+
     }
 
 

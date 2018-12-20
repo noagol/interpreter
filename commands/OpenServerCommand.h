@@ -10,7 +10,7 @@
 
 
 class OpenServerCommand : public BaseCommand {
-public:
+    public:
     OpenServerCommand(Parser *p) : BaseCommand(p) {}
 
     void doCommand() override {
