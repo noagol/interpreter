@@ -128,7 +128,7 @@ public:
     }
 
     void test17() {
-        string input = "connect 127.0.0.1 5400";
+        string input = "connect 127.0.0.1 5402 sleep 10000000";
         run(input);
     }
 

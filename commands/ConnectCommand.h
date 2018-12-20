@@ -22,10 +22,13 @@ public:
         Expression *portExp = parser->getNextExpression();
         int port = (int) portExp->calculate();
         delete (portExp);
-        runClient(ip, port);
+   //     runClient(ip, port);
+
+        thread serverThread(runClient, ip, port);
+        serverThread.detach();
     }
 
-    void runClient(string ip, int port) {
+    static void runClient(string ip, int port) {
         int sockfd, portno, n;
         struct sockaddr_in serv_addr;
         struct hostent *server;
@@ -65,7 +68,8 @@ public:
             printf("Please enter the message: ");
             bzero(buffer,256);
             fgets(buffer,255,stdin);
-
+            buffer[strlen(buffer) - 1] = '\r';
+            buffer[strlen(buffer)] = '\n';
             /* Send message to the server */
             n = write(sockfd, buffer, strlen(buffer));
 
