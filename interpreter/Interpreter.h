@@ -82,7 +82,7 @@ public:
     }
 
     void executeFromLine(const string &line) {
-        Lexer(tokenArray, line).lex();
+        Lexer(tokenArray, commandTable, line).lex();
         parser->parse();
     }
 

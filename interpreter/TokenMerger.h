@@ -113,13 +113,14 @@ public:
     bool isSingleToken() {
         TOKEN_TYPE type = currentToken.getType();
         return type == START_CODE_BLOCK || type == END_CODE_BLOCK
-               || type == STRING || type == ASSIGNMENT_OPERATOR;
+               || type == STRING || type == ASSIGNMENT_OPERATOR || type == COMMAND;
     }
 
     bool isExpressionTerminator(Token &token) {
-        return token.getType() == NUMBER || token.getType() == NAME ||
-               token.getType() == END_OF_INPUT || token.getType() == STRING ||
-               token.getType() == START_CODE_BLOCK || token.getType() == END_CODE_BLOCK;
+        return token.getType() == NUMBER || token.getType() == NAME
+               || token.getType() == END_OF_INPUT || token.getType() == STRING
+               || token.getType() == START_CODE_BLOCK || token.getType() == END_CODE_BLOCK
+               || token.getType() == COMMAND;
     }
 
     Token getFromOffset(int i) {

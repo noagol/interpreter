@@ -13,6 +13,7 @@
 #include "../expressions/TokenArray.h"
 #include "TokenMerger.h"
 #include "../helpers/Validator.h"
+#include "../tables/CommandTable.h"
 
 using namespace std;
 
@@ -23,10 +24,10 @@ class Lexer {
     Token currentToken;
     Token lastToken;
     TokenArray *tokenArray;
-
+    CommandTable *commandTable;
 public:
-    Lexer(TokenArray *ta, const string &inputStr) : tokenArray(ta), input(inputStr), pos(0),
-                                                    currentToken(), lastToken() {
+    Lexer(TokenArray *ta, CommandTable *ct, const string &inputStr) : tokenArray(ta), input(inputStr), pos(0),
+                                                                      currentToken(), lastToken(), commandTable(ct) {
         currentChar = inputStr.at(pos);
     }
 
@@ -177,7 +178,11 @@ public:
             // Handle variables and commands
             if (isVariableStart(this->currentChar)) {
                 string token = readName();
-                return Token(NAME, token);
+                if (isCommand(token)) {
+                    return Token(COMMAND, token);
+                } else {
+                    return Token(NAME, token);
+                }
             }
 
             // Handle operators
@@ -218,7 +223,9 @@ public:
         return Token(END_OF_INPUT, "");
     }
 
-
+    bool isCommand(const string &str) {
+        return commandTable->exists(str);
+    }
 };
 
 #endif //PROJECT_ADVANCED_NEWLEXER_H

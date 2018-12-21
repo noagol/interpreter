@@ -11,11 +11,17 @@
 
 class DefineVarCommand : public BaseCommand {
 public:
-    DefineVarCommand(Parser *p):BaseCommand(p) {};
+    DefineVarCommand(Parser *p) : BaseCommand(p) {};
 
     void doCommand() override {
+        // Get variable name
         string varName = parser->getTokenArray()->next();
-       parser->getSymbolTable()->add(varName, 0.0);
+        // Check if its a command name
+        if (parser->getCommandTable()->exists(varName)) {
+            throw ParserException(format("Unable to define variable: Name \"%s\" is a saved name", varName));
+        }
+        // Add to symbol table
+        parser->getSymbolTable()->add(varName, 0.0);
     }
 };
 

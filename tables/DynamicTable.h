@@ -29,7 +29,7 @@ public:
         }
     }
 
-    bool exists(string &key) {
+    bool exists(const string &key) {
         return table.find(key) != table.end();
     }
 
