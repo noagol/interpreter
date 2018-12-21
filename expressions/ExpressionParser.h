@@ -1,9 +1,4 @@
-//
-// Created by EB on 14/12/2018.
-//
-
 #ifndef PROJECT_ADVANCED_EXPRESSIONPARSER_H
-#define PROJECT_ADVANCED_EXPRESSIONPARSER_H
 
 #include <bits/stdc++.h>
 #include "../expressions/binary/Plus.h"
@@ -24,6 +19,8 @@
 #include "../helpers/Validator.h"
 
 using namespace std;
+#define PROJECT_ADVANCED_EXPRESSIONPARSER_H
+
 
 /**
  * Operators types

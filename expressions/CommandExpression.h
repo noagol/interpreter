@@ -1,26 +1,19 @@
-//
-// Created by EB on 15/12/2018.
-//
 
 #ifndef PROJECT_ADVANCED_COMMANDEXPRESSION_H
-#define PROJECT_ADVANCED_COMMANDEXPRESSION_H
-
 #include <Command.h>
 #include "Expression.h"
+#define PROJECT_ADVANCED_COMMANDEXPRESSION_H
+
+
 
 class CommandExpression : public Expression {
     Command *command;
 public:
-    CommandExpression(Command *c) : command(c) {}
+    CommandExpression(Command *c);
 
-    double calculate() override {
-        command->doCommand();
-        return 0;
-    }
+    double calculate() override;
 
-    ~CommandExpression() {
-        delete (command);
-    }
+    ~CommandExpression();
 };
 
 #endif //PROJECT_ADVANCED_COMMANDEXPRESSION_H

@@ -1,6 +1,3 @@
-//
-// Created by noa on 13/12/2018.
-//
 
 #ifndef PROJECT_ADVANCED_BINARYEXPRESSION_H
 
@@ -14,22 +11,13 @@ class BinaryExpression : public Expression {
     Expression *right;
 
 public:
-    BinaryExpression(Expression *l, Expression *r) :
-            left(l), right(r) {
-    }
+    BinaryExpression(Expression *l, Expression *r);
 
-    ~BinaryExpression() override {
-        delete (left);
-        delete (right);
-    }
+    Expression *getLeft() const;
 
-    Expression *getLeft() const {
-        return left;
-    }
+    Expression *getRight() const;
 
-    Expression *getRight() const {
-        return right;
-    }
+    ~BinaryExpression() override;
 
 };
 
