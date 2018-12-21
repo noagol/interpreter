@@ -24,7 +24,11 @@ public:
     }
 
     string next() {
-        return array.at(i++);
+        if (isFinished()) {
+            return "";
+        } else {
+            return array.at(i++);
+        }
     }
 
     string peek() {
@@ -59,11 +63,16 @@ public:
     }
 
     Expression *getExpression(const string &token) {
-        return ExpressionParser(symbolTable, token).parse();
+        if (token.empty()) {
+            return nullptr;
+        } else {
+            return ExpressionParser(symbolTable, token).parse();
+        }
     }
 
     Expression *getNextExpression() {
-        return ExpressionParser(symbolTable, next()).parse();
+        string token = next();
+        return getExpression(token);
     }
 
     string getFrom(int valueToAddToI) {

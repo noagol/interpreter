@@ -220,6 +220,11 @@ public:
         interpreter.executeFromFile("../tests/files/main_example.txt");
     }
 
+    void testFile5() {
+        Interpreter interpreter = Interpreter();
+        interpreter.executeFromFile("../tests/files/main.txt");
+    }
+
 };
 
 #endif //PROJECT_ADVANCED_INTERPRETERTESTS_H
