@@ -3,20 +3,15 @@
 //
 
 #ifndef PROJECT_ADVANCED_CONDITIONPARSER_H
-#define PROJECT_ADVANCED_CONDITIONPARSER_H
-
 #include "../interpreter/Parser.h"
 #include "../commands/BaseCommand.h"
-
+#define PROJECT_ADVANCED_CONDITIONPARSER_H
 
 class ConditionParser : public BaseCommand {
 public:
-    ConditionParser(Parser *p) : BaseCommand(p) {}
+    ConditionParser(Parser *p);
 
-    Expression *readCondition() {
-        return parser->getNextExpression();
-    }
-
+    Expression *readCondition();
 };
 
 #endif //PROJECT_ADVANCED_CONDITIONPARSER_H
