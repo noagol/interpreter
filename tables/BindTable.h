@@ -17,82 +17,19 @@ class BindTable {
     map<string, vector<string>> pathToVariables;
     vector<string> variablePaths;
 public:
-    BindTable() {
-        variablePaths = {"/instrumentation/airspeed-indicator/indicated-speed-kt",
-                         "/instrumentation/altimeter/indicated-altitude-ft",
-                         "/instrumentation/altimeter/pressure-alt-ft",
-                         "/instrumentation/attitude-indicator/indicated-pitch-deg",
-                         "/instrumentation/attitude-indicator/indicated-roll-deg",
-                         "/instrumentation/attitude-indicator/internal-pitch-deg",
-                         "/instrumentation/attitude-indicator/internal-roll-deg",
-                         "/instrumentation/encoder/indicated-altitude-ft",
-                         "/instrumentation/encoder/pressure-alt-ft",
-                         "/instrumentation/gps/indicated-altitude-ft",
-                         "/instrumentation/gps/indicated-ground-speed-kt",
-                         "/instrumentation/gps/indicated-vertical-speed",
-                         "/instrumentation/heading-indicator/indicated-heading-deg",
-                         "/instrumentation/magnetic-compass/indicated-heading-deg",
-                         "/instrumentation/slip-skid-ball/indicated-slip-skid",
-                         "/instrumentation/turn-indicator/indicated-turn-rate",
-                         "/instrumentation/vertical-speed-indicator/indicated-speed-fpm",
-                         "/controls/flight/aileron",
-                         "/controls/flight/elevator",
-                         "/controls/flight/rudder",
-                         "/controls/flight/flaps",
-                         "/controls/engines/engine/throttle",
-                         "/engines/engine/rpm"};
-    }
+    BindTable();
 
-    string getPathByIndex(int i) {
-        return variablePaths.at(i);
-    }
+    string getPathByIndex(int i);
 
-    void insert(const string &var, const string &path) {
-        variableToPath[var] = path;
-        if (pathExists(path)) {
-            vector<string> a = pathToVariables[path];
-            a.push_back(var);
-            pathToVariables[path] = a;
-        } else {
-            pathToVariables[path] = (vector<string>) {var};
-        }
-    }
+    void insert(const string &var, const string &path);
 
-    string getPathByVariable(const string &var) {
-        if (variableExists(var)) {
-            return variableToPath.at(var);
-        } else {
-            throw invalid_argument("Key is not present in table");
-        }
-    }
+    string getPathByVariable(const string &var);
 
-    vector<string> getVariablesByPath(const string &path) {
-        if (pathExists(path)) {
-            return pathToVariables.at(path);
-        } else {
-            throw invalid_argument("Key is not present in table");
-        }
-    }
+    vector<string> getVariablesByPath(const string &path);
 
-    bool variableExists(const string &varName) {
-        return variableToPath.find(varName) != variableToPath.end();
-    }
+    bool variableExists(const string &varName);
 
-    bool pathExists(const string &pathName) {
-        return pathToVariables.find(pathName) != pathToVariables.end();
-    }
-
-//    static BindTable *getInstance() {
-//        if (!instance) {
-//            instance = new BindTable();
-//            return instance;
-//        } else {
-//            return instance;
-//        }
-//    }
+    bool pathExists(const string &pathName);
 };
-
-//BindTable *BindTable::instance = nullptr;
-
 
 #endif //PROJECT_ADVANCED_BINDTABLE_H

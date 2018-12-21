@@ -16,70 +16,27 @@ class Parser {
     SymbolTable *symbolTable;
     TokenArray *tokenArray;
 public:
-    Parser(TokenArray *ta, CommandTable *ct, BindTable *bt, SymbolTable *st) :
-            commandTable(ct),
-            bindTable(bt),
-            symbolTable(st),
-            tokenArray(ta) {}
+    Parser(TokenArray *ta, CommandTable *ct, BindTable *bt, SymbolTable *st);
 
-    void parse() {
-        while (!tokenArray->isFinished() && tokenArray->peek() != "}") {
-            parseCommand();
-        }
-    }
+    void parse();
 
-    bool parseCommand() {
-        string token = tokenArray->next();
-        if (isCommand(token)) {
-            Expression *command = commandTable->get(token);
-            command->calculate();
-        } else if (isVariable(token)) {
-            string nextToken = tokenArray->next();
-            if (nextToken == "=") {
-                Expression *command = commandTable->get(nextToken);
-                command->calculate();
-            } else {
-                throw ParserException(format("Undefined command given: %s %s", token, nextToken));
-            }
-        } else {
-            throw ParserException(format("Undefined token: %s", token));
-        }
-    }
+    bool parseCommand();
 
-    Expression *getNextExpression() {
-        return tokenArray->getNextExpression();
-    }
+    Expression *getNextExpression();
 
+    bool isCommand(string &key);
 
-    bool isCommand(string &key) {
-        return commandTable->exists(key);
-    }
+    bool isVariable(string &key);
 
-    bool isVariable(string &key) {
-        return symbolTable->exists(key);
-    }
+    CommandTable *getCommandTable();
 
-    CommandTable *getCommandTable() {
-        return commandTable;
-    }
+    BindTable *getBindTable();
 
-    BindTable *getBindTable() {
-        return bindTable;
-    }
+    SymbolTable *getSymbolTable();
 
-    SymbolTable *getSymbolTable() {
-        return symbolTable;
-    }
+    TokenArray *getTokenArray();
 
-    TokenArray *getTokenArray() {
-        return tokenArray;
-    }
-
-    ~Parser() {
-        delete commandTable;
-        delete symbolTable;
-        delete bindTable;
-    }
+    ~Parser();
 };
 
 

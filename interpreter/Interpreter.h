@@ -27,95 +27,24 @@ class Interpreter {
     BindTable *bindTable;
     SymbolTable *symbolTable;
 public:
-    Interpreter() : commandTable(new CommandTable()),
-                    bindTable(new BindTable()), symbolTable(new SymbolTable()) {
-        tokenArray = new TokenArray(symbolTable);
-        parser = new Parser(tokenArray, commandTable, bindTable, symbolTable);
-        initialize();
-    }
+    Interpreter();
 
-    void executeFromFile(const string &path) {
-        ifstream myFile(path);
-        string line;
-        if (!myFile.good()) {
-            throw runtime_error("File not found");
-        }
+    void executeFromFile(const string &path);
 
-        if (myFile.is_open()) {
-            line = readLines(myFile);
-            while (!line.empty()) {
-                executeFromLine(line);
-                line = readLines(myFile);
-            }
-            myFile.close();
-        } else {
-            throw runtime_error("Unable to open file");
-        }
-    }
+    string readLine(ifstream &myFile);
 
-    string readLines(ifstream &myFile) {
-        string line;
+    string readCodeBlock(ifstream &myFile);
 
-        getline(myFile, line);
+    void executeFromLine(const string &line);
 
-        if (startswith(line, "while") || startswith(line, "if")) {
-            line += readCodeBlock(myFile);
-        }
-
-        return line;
-    }
-
-    string readCodeBlock(ifstream &myFile) {
-        string line;
-        string buffer;
-        while (getline(myFile, buffer)) {
-            line += buffer;
-            if (endswith(strip(buffer), "}")) {
-                return line;
-            }
-            if (startswith(line, "while") || startswith(line, "if")) {
-                line += readCodeBlock(myFile);
-            }
-        }
-
-        return line;
-    }
-
-    void executeFromLine(const string &line) {
-        Lexer(tokenArray, commandTable, line).lex();
-        parser->parse();
-    }
-
-    ~Interpreter() {
-        destroy();
-        delete (parser);
-        delete (tokenArray);
-    }
+    ~Interpreter();
 
 private:
-    void initialize() {
-        initCommands();
-    }
+    void initialize();
 
-    void destroy() {
-        OpenServerCommand::stop();
-        ConnectCommand::stop();
-        // Let the threads shut down correctly
-        this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 250));
-    }
+    void destroy();
 
-    void initCommands() {
-        CommandTable *ct = parser->getCommandTable();
-        ct->add(OPEN_DATA_SERVER_COMMAND, new CommandExpression(new OpenServerCommand(parser)));
-        ct->add(SLEEP_COMMAND, new CommandExpression(new SleepCommand(parser)));
-        ct->add(PRINT_COMMAND, new CommandExpression(new PrintCommand(parser)));
-        ct->add(VAR_COMMAND, new CommandExpression(new DefineVarCommand(parser)));
-        ct->add(BIND_COMMAND, new CommandExpression(new BindCommand(parser)));
-        ct->add(ASSIGNMENT_COMMAND, new CommandExpression(new AssignmentCommand(parser)));
-        ct->add(IF_COMMAND, new CommandExpression(new IfCommand(parser)));
-        ct->add(WHILE_COMMAND, new CommandExpression(new LoopCommand(parser)));
-        ct->add(CONNECT_COMMAND, new CommandExpression(new ConnectCommand(parser)));
-    }
+    void initCommands();
 
 };
 
