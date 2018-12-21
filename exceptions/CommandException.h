@@ -6,20 +6,19 @@
 #define PROJECT_ADVANCED_COMMANDEXCEPTION_H
 
 #include <exception>
+#include <string>
 
 using namespace std;
 
 class CommandException : public exception {
     const string message;
 public:
-    CommandException(const char *msg) : message(msg) {}
+    CommandException(const char *msg);
 
-    CommandException(const string msg) : message(msg) {}
+    CommandException(const string msg);
 
 
-    const char *what() const throw() {
-        return message.c_str();
-    }
+    const char *what() const throw();
 };
 
 #endif //PROJECT_ADVANCED_COMMANDEXCEPTION_H

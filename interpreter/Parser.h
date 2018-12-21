@@ -20,7 +20,7 @@ public:
 
     void parse();
 
-    bool parseCommand();
+    void parseCommand();
 
     Expression *getNextExpression();
 

@@ -5,6 +5,7 @@
 #ifndef PROJECT_ADVANCED_COMPILATIONEXCEPTION_H
 
 #include <exception>
+#include <string>
 
 using namespace std;
 
@@ -14,14 +15,11 @@ using namespace std;
 class ParserException : public exception {
     const string message;
 public:
-    ParserException(const char *msg) : message(msg) {}
+    ParserException(const char *msg);
 
-    ParserException(const string msg) : message(msg) {}
+    ParserException(const string msg);
 
-
-    const char *what() const throw() {
-        return message.c_str();
-    }
+    const char *what() const throw();
 };
 
 #endif //PROJECT_ADVANCED_COMPILATIONEXCEPTION_H

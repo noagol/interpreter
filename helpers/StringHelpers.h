@@ -14,7 +14,9 @@
 
 using namespace std;
 
-// base case of recursion, no more arguments
+/**
+ * Format string using specifiers, e.g. %s %d...
+ */
 static void format_impl(std::stringstream &ss, const char *format) {
     while (*format) {
         if (*format == '%' && *++format != '%') // %% == % (not a format directive)
@@ -49,7 +51,12 @@ static std::string format(const char *fmt, Args... args) {
     return ss.str();
 }
 
-
+/**
+ * Check if a string ends with another
+ * @param base main
+ * @param postfix end string
+ * @return true if base ends with postfix
+ */
 static bool endswith(const string base, const string postfix) {
     if (base.size() < postfix.size()) {
         return false;
@@ -57,6 +64,12 @@ static bool endswith(const string base, const string postfix) {
     return !base.compare(base.size() - postfix.size(), base.size() - 1, postfix);
 }
 
+/**
+ * Check if a string starts with another
+ * @param base main
+ * @param prefix start string
+ * @return true if base starts with prefix
+ */
 static bool startswith(const string base, const string prefix) {
     if (base.size() < prefix.size()) {
         return false;
@@ -64,7 +77,12 @@ static bool startswith(const string base, const string prefix) {
     return !base.compare(0, prefix.size(), prefix);
 }
 
-
+/**
+ * Splits a string by a char
+ * @param str the string
+ * @param delimeter the split character
+ * @return split of the string
+ */
 static vector<string> split(string *str, char delimeter) {
     unsigned int i = 0;
     unsigned int a = 0;
@@ -80,17 +98,34 @@ static vector<string> split(string *str, char delimeter) {
     return l;
 }
 
-
+/**
+ * Strip whitespaces from the left
+ * @param str the string
+ * @param chars chars to remove
+ * @return the striped string
+ */
 static string lstrip(string str, const string &chars = "\t\n\v\f\r ") {
     str.erase(0, str.find_first_not_of(chars));
     return str;
 }
 
+/**
+ * Strip whitespaces from the right
+ * @param str the string
+ * @param chars chars to remove
+ * @return the striped string
+ */
 static string rstrip(string str, const string &chars = "\t\n\v\f\r ") {
     str.erase(str.find_last_not_of(chars) + 1);
     return str;
 }
 
+/**
+ * Strip whitespaces from both sides
+ * @param str the string
+ * @param chars chars to remove
+ * @return the striped string
+ */
 static string strip(string str, const string &chars = "\t\n\v\f\r ") {
     return lstrip(rstrip(str, chars), chars);
 }

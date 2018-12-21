@@ -5,6 +5,7 @@
 #ifndef PROJECT_ADVANCED_BASEEXCEPTION_H
 
 #include <exception>
+#include <string>
 
 using namespace std;
 
@@ -14,14 +15,11 @@ using namespace std;
 class LexerException : public exception {
     const string message;
 public:
-    LexerException(const char *msg) : message(msg) {}
+    LexerException(const char *msg);
 
-    LexerException(const string msg) : message(msg) {}
+    LexerException(const string msg);
 
-
-    const char *what() const throw() {
-        return message.c_str();
-    }
+    const char *what() const throw();
 };
 
 #endif //PROJECT_ADVANCED_BASEEXCEPTION_H
