@@ -7,7 +7,7 @@
 OpenServerCommand::OpenServerCommand(Parser *p) : BaseCommand(p) {}
 
 /**
- * should Stop boolean to end thread
+ * Should Stop boolean to end thread
  */
 bool OpenServerCommand::shouldStop = false;
 
@@ -114,10 +114,10 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
 }
 
 /**
- *
- * @param updateData
- * @param bindTable
- * @param symbolTable
+ * Update variables using an update data from the server
+ * @param updateData data from the server
+ * @param bindTable the bind table
+ * @param symbolTable the symbol table
  */
 void OpenServerCommand::updateVariables(string updateData, BindTable *bindTable, SymbolTable *symbolTable) {
     unsigned long int newLineIndex = updateData.find('\n');
@@ -127,6 +127,7 @@ void OpenServerCommand::updateVariables(string updateData, BindTable *bindTable,
         updateData = dataSplit.at(0);
     }
 
+    // Split by ,
     vector<string> sp = split(&updateData, ',');
 
     string path;
@@ -134,6 +135,7 @@ void OpenServerCommand::updateVariables(string updateData, BindTable *bindTable,
     vector<string>::iterator it;
     double value;
     int i;
+    // Update variables
     for (i = 0; i < 23; i++) {
         path = bindTable->getPathByIndex(i);
         if (bindTable->pathExists(path)) {
@@ -145,10 +147,10 @@ void OpenServerCommand::updateVariables(string updateData, BindTable *bindTable,
         }
     }
 }
-/**
- * stop the thread
- */
 
- void OpenServerCommand:: stop() {
+/**
+ * Stop running threads
+ */
+void OpenServerCommand::stop() {
     shouldStop = true;
 }

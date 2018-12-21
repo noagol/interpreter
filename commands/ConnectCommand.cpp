@@ -32,10 +32,10 @@ void ConnectCommand::doCommand() {
 
 /**
  * connect to the simulator and update variables
- * @param ip
- * @param port
- * @param symbolTable
- * @param bindTable
+ * @param ip of the server
+ * @param port of the server
+ * @param symbolTable the symbol table
+ * @param bindTable the bind table
  */
 void ConnectCommand::runClient(string ip, int port,
                                SymbolTable *symbolTable, BindTable *bindTable) {
@@ -78,6 +78,7 @@ void ConnectCommand::runClient(string ip, int port,
         exit(1);
     }
 
+    // Update the server for changes
     vector<string> changes;
     vector<string>::iterator it;
     string updateMessage;
@@ -99,12 +100,13 @@ void ConnectCommand::runClient(string ip, int port,
                 }
             }
         }
+        // Sleep a little and continue to check for updates
         this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 250));
     }
 }
 
 /**
- * stop the thread
+ * Stop running threads
  */
 void ConnectCommand::stop() {
     shouldStop = true;
