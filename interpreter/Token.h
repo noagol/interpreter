@@ -21,17 +21,13 @@ class Token {
     TOKEN_TYPE type;
     string value;
 public:
-    Token() : type(UNKNOWN), value() {}
+    Token();
 
-    Token(TOKEN_TYPE t, const string &v) : type(t), value(v) {}
+    Token(TOKEN_TYPE t, const string &v);
 
-    TOKEN_TYPE getType() const {
-        return type;
-    }
+    TOKEN_TYPE getType() const;
 
-    const string getValue() const {
-        return value;
-    }
+    const string getValue() const;
 };
 
 #endif //PROJECT_ADVANCED_TOKEN_H
