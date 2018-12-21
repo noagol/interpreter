@@ -1,6 +1,3 @@
-//
-// Created by noa on 13/12/2018.
-//
 
 #ifndef PROJECT_ADVANCED_UNARYEXPRESSION_H
 
@@ -13,16 +10,11 @@ class UnaryExpression : public Expression {
     Expression *expression;
 
 public:
-    UnaryExpression(Expression *exp) :
-            expression(exp) {}
+    UnaryExpression(Expression *exp);
 
-    ~UnaryExpression() override {
-        delete (expression);
-    }
+    Expression *getExpression() const;
 
-    Expression *getExpression() const {
-        return expression;
-    }
+    ~UnaryExpression() override;
 
 };
 

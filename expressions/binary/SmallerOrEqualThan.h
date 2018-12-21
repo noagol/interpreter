@@ -1,19 +1,15 @@
-//
-// Created by EB on 13/12/2018.
-//
 
 #ifndef PROJECT_ADVANCED_SMALLEROREQUALTHAN_H
+#include "../BinaryExpression.h"
+
 #define PROJECT_ADVANCED_SMALLEROREQUALTHAN_H
 
-#include "../BinaryExpression.h"
 
 class SmallerOrEqualThan : public BinaryExpression {
 public:
-    SmallerOrEqualThan(Expression *l, Expression *r) : BinaryExpression(l, r) {}
+    SmallerOrEqualThan(Expression *l, Expression *r) ;
 
-    double calculate() override {
-        return getLeft()->calculate() <= getRight()->calculate();
-    }
+    double calculate() override ;
 };
 
 

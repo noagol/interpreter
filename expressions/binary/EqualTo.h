@@ -1,6 +1,3 @@
-//
-// Created by EB on 13/12/2018.
-//
 
 #ifndef PROJECT_ADVANCED_EQUALTO_H
 #define PROJECT_ADVANCED_EQUALTO_H
@@ -9,11 +6,9 @@
 
 class EqualTo : public BinaryExpression {
 public:
-    EqualTo(Expression *l, Expression *r) : BinaryExpression(l, r) {}
+    EqualTo(Expression *l, Expression *r) ;
 
-    double calculate() override {
-        return getLeft()->calculate() == getRight()->calculate();
-    }
+    double calculate() override;
 };
 
 

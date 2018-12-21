@@ -1,19 +1,15 @@
-//
-// Created by EB on 13/12/2018.
-//
 
 #ifndef PROJECT_ADVANCED_SMALLERTHAN_H
+#include "../BinaryExpression.h"
+
 #define PROJECT_ADVANCED_SMALLERTHAN_H
 
-#include "../BinaryExpression.h"
 
 class SmallerThan : public BinaryExpression {
 public:
-    SmallerThan(Expression *l, Expression *r) : BinaryExpression(l, r) {}
+    SmallerThan(Expression *l, Expression *r) ;
 
-    double calculate() override {
-        return getLeft()->calculate() < getRight()->calculate();
-    }
+    double calculate() override;
 };
 
 
