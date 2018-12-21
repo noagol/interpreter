@@ -4,7 +4,7 @@
 #include <BindTable.h>
 #include "../expressions/TokenArray.h"
 #include "../commands/BaseCommand.h"
-
+#include "../exceptions/CommandException.h"
 
 class BindCommand : public BaseCommand {
 public:
@@ -16,7 +16,7 @@ public:
         string varName = parser->getTokenArray()->getFrom(-4);
         // Validate variable exists
         if (!parser->getSymbolTable()->exists(varName)) {
-            throw ParserException(format("Undefined variable to Bind Command: %s", varName));
+            throw CommandException(format("Undefined variable to Bind Command: %s", varName));
         }
 
         if (argument.at(0) == '"' && argument.at(argument.size() - 1) == '"') {
@@ -27,7 +27,7 @@ public:
             // Variable
             // Check if in the bind table
             if (!parser->getBindTable()->variableExists(argument)) {
-                throw ParserException(format("Variable %s has not been bind to a path", argument));
+                throw CommandException(format("Variable %s has not been bind to a path", argument));
             }
 
             // Add to bind table

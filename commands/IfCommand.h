@@ -18,7 +18,7 @@ public:
         Expression *condition = readCondition();
         string startToken = parser->getTokenArray()->next();
         if (startToken != "{") {
-            throw ParserException("Missing opening brackets in if command");
+            throw CommandException("Missing opening brackets in if command");
         }
 
         if ((bool) condition->calculate()) {

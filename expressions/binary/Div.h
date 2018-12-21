@@ -5,6 +5,7 @@
 #ifndef PROJECT_ADVANCED_DIV_H
 
 #include "../BinaryExpression.h"
+#include "../../exceptions/ParserException.h"
 
 #define PROJECT_ADVANCED_DIV_H
 
@@ -14,7 +15,11 @@ public:
     Div(Expression *l, Expression *r) : BinaryExpression(l, r) {}
 
     double calculate() override {
-        return getLeft()->calculate() / getRight()->calculate();
+        double rightValue = getRight()->calculate();
+        if (rightValue == 0){
+            throw ParserException("Divide by zero exception");
+        }
+        return getLeft()->calculate() / rightValue;
     }
 };
 

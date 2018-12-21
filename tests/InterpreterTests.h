@@ -194,8 +194,14 @@ public:
     }
 
     void expressions10() {
-        string input = "print (200*0.5 + 31 + -(10*2*(1*2)))";
-        cout << "91 expected: " << endl;
+        string input = "print -(200*0.5 + 31 + -(10*2*(1*2)))";
+        cout << "-91 expected: " << endl;
+        run(input);
+    }
+
+    void expressions11() {
+        string input = "connect";
+        cout << "-91 expected: " << endl;
         run(input);
     }
 

@@ -9,6 +9,7 @@
 #include "Command.h"
 #include "../expressions/TokenArray.h"
 #include "BaseCommand.h"
+#include "../exceptions/CommandException.h"
 
 class AssignmentCommand : public BaseCommand {
 public:
@@ -17,7 +18,7 @@ public:
     void doCommand() override {
         string varName = parser->getTokenArray()->getFrom(-2);
         if (!parser->getSymbolTable()->exists(varName)) {
-            throw ParserException("Variable is not defined");
+            throw CommandException(format("Variable %s is not defined", varName));
         }
 
         string token = parser->getTokenArray()->next();
@@ -26,6 +27,9 @@ public:
             command->calculate();
         } else {
             Expression *expression = parser->getTokenArray()->getExpression(token);
+            if (expression == nullptr) {
+
+            }
             parser->getSymbolTable()->add(varName, expression->calculate());
             delete (expression);
         }

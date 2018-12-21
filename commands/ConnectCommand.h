@@ -16,8 +16,10 @@
 
 
 class ConnectCommand : public BaseCommand {
+    static bool shouldStop;
 public:
-    ConnectCommand(Parser *p) : BaseCommand(p) {}
+    ConnectCommand(Parser *p) : BaseCommand(p) {
+    }
 
     void doCommand() override {
         string ip = parser->getTokenArray()->next();
@@ -25,6 +27,9 @@ public:
         Expression *portExp = parser->getNextExpression();
         int port = (int) portExp->calculate();
         delete (portExp);
+        if (1 > port || port > 65535) {
+            throw CommandException(format("Port value out of range: %d", port));
+        }
 
         thread clientThread(runClient, ip, port, parser->getSymbolTable(), parser->getBindTable());
         clientThread.detach();
@@ -71,11 +76,10 @@ public:
             exit(1);
         }
 
-
         vector<string> changes;
         vector<string>::iterator it;
         string updateMessage;
-        while (true) {
+        while (!shouldStop) {
             if (symbolTable->areThereAnyChanges()) {
                 changes = symbolTable->getChangedKeys();
 
@@ -93,15 +97,17 @@ public:
                     }
                 }
             }
-
             this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 250));
-
-
         }
+    }
 
+    static void stop() {
+        shouldStop = true;
     }
 
 };
+
+bool ConnectCommand::shouldStop = false;
 
 
 #endif //PROJECT_ADVANCED_CONNECTCOMMAND_H

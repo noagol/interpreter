@@ -9,6 +9,7 @@
 #include <Parser.h>
 #include "Command.h"
 #include "ConditionParser.h"
+#include "../exceptions/CommandException.h"
 
 #define ADVANCED_IFCOMMAND_H
 
@@ -21,7 +22,7 @@ public:
         Expression *condition = readCondition();
         string startToken = parser->getTokenArray()->next();
         if (startToken != "{") {
-            throw ParserException("Missing opening brackets in if command");
+            throw CommandException("Missing opening brackets in if command");
         }
 
         int startPosition = parser->getTokenArray()->getIndex();

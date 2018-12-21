@@ -87,6 +87,7 @@ public:
     }
 
     ~Interpreter() {
+        destroy();
         delete (parser);
         delete (tokenArray);
     }
@@ -94,6 +95,13 @@ public:
 private:
     void initialize() {
         initCommands();
+    }
+
+    void destroy() {
+        OpenServerCommand::stop();
+        ConnectCommand::stop();
+        // Let the threads shut down correctly
+        this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 250));
     }
 
     void initCommands() {
@@ -107,9 +115,7 @@ private:
         ct->add(IF_COMMAND, new CommandExpression(new IfCommand(parser)));
         ct->add(WHILE_COMMAND, new CommandExpression(new LoopCommand(parser)));
         ct->add(CONNECT_COMMAND, new CommandExpression(new ConnectCommand(parser)));
-
     }
-
 
 };
 

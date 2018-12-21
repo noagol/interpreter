@@ -8,6 +8,7 @@
 #include "Command.h"
 #include "../expressions/TokenArray.h"
 #include "BaseCommand.h"
+#include "../exceptions/CommandException.h"
 
 class DefineVarCommand : public BaseCommand {
 public:
@@ -18,7 +19,7 @@ public:
         string varName = parser->getTokenArray()->next();
         // Check if its a command name
         if (parser->getCommandTable()->exists(varName)) {
-            throw ParserException(format("Unable to define variable: Name \"%s\" is a saved name", varName));
+            throw CommandException(format("Unable to define variable: Name \"%s\" is a saved name", varName));
         }
         // Add to symbol table
         parser->getSymbolTable()->add(varName, 0.0);

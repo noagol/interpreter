@@ -12,24 +12,35 @@
 
 
 class OpenServerCommand : public BaseCommand {
+    static bool shouldStop;
 public:
     OpenServerCommand(Parser *p) : BaseCommand(p) {}
 
     void doCommand() override {
         // Extract params
+
+        // Port number
         Expression *portExp = parser->getNextExpression();
         if (portExp == nullptr) {
             throw CommandException("Not enough arguments for openServerCommand. Expected: 2, 0 given");
         }
         int port = (int) portExp->calculate();
         delete (portExp);
+        if (1 > port || port > 65535) {
+            throw CommandException(format("Port value out of range: %d", port));
+        }
 
+        // Times per second
         Expression *hzExp = parser->getNextExpression();
         if (hzExp == nullptr) {
             throw CommandException("Not enough arguments for openServerCommand. Expected: 2, 1 given");
         }
         int timesPerSecond = (int) hzExp->calculate();
         delete (hzExp);
+
+        if (timesPerSecond < 1) {
+            throw CommandException(format("Non positive value for hz on open data server: %d", timesPerSecond));
+        }
 
         // Run the server
         thread serverThread(runServer, port, timesPerSecond, parser->getBindTable(), parser->getSymbolTable());
@@ -71,7 +82,7 @@ public:
         clilen = sizeof(cli_addr);
         newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
 
-        while (true) {
+        while (!shouldStop) {
             /* Accept actual connection from the client */
 
             if (newsockfd < 0) {
@@ -121,56 +132,14 @@ public:
                 }
             }
         }
-
-
     }
 
-
-//    void runServer(int port, int timesPerSecond) {
-//        int server;
-//        struct sockaddr_in address;
-//
-//        // Creating socket file descriptor
-//        server = socket(AF_INET, SOCK_STREAM, 0);
-//
-//        address.sin_family = AF_INET;
-//        address.sin_addr.s_addr = INADDR_ANY;
-//        address.sin_port = htons(port);
-//
-//        // Forcefully attaching socket to the port 8080
-//        bind(server, (struct sockaddr *) &address,
-//             sizeof(address));
-//
-//        // Run thread
-//        thread serverThread(handleRequests, server, &address, timesPerSecond);
-//        serverThread.detach();
-//    }
-//
-//    static void handleRequests(int server, struct sockaddr_in *address, int timesPerSecond) {
-//        // The value read from the socket
-//        int valueRead;
-//
-//        // Client socket identifier
-//        int clientSocket;
-//
-//        // Address length
-//        int addrlen = sizeof(address);
-//
-//        // For debug
-//        char buffer[1024] = {0};
-//        listen(server, 5);
-//        while (true) {
-//            sleep(1 / timesPerSecond);
-//            // accepting a client
-//            clientSocket = accept(server, (struct sockaddr *) address,
-//                                  (socklen_t *) &addrlen);
-//
-//            valueRead = read(clientSocket, buffer, 1024);
-//            printf("%s\n", buffer);
-//        }
-//
-//    }
+    static void stop() {
+        shouldStop = true;
+    }
 };
+
+bool OpenServerCommand::shouldStop = false;
 
 
 #endif //ADVANCED_OPENSERVERCOMMAND_H
