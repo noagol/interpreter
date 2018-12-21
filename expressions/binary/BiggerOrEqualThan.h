@@ -5,15 +5,13 @@
 #ifndef PROJECT_ADVANCED_BIGGEROREQUALTHAN_H
 #define PROJECT_ADVANCED_BIGGEROREQUALTHAN_H
 
-#include "../expressions/BinaryExpression.h"
+#include "../BinaryExpression.h"
 
 class BiggerOrEqualThan : public BinaryExpression {
 public:
-    BiggerOrEqualThan(Expression *l, Expression *r) : BinaryExpression(l, r) {}
+    BiggerOrEqualThan(Expression *l, Expression *r);
 
-    double calculate() override {
-        return getLeft()->calculate() >= getRight()->calculate();
-    }
+    double calculate() override;
 };
 
 

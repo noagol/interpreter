@@ -4,7 +4,7 @@
 
 #ifndef PROJECT_ADVANCED_MUL_H
 
-#include "../expressions/BinaryExpression.h"
+#include "../BinaryExpression.h"
 
 #define PROJECT_ADVANCED_MUL_H
 class Mult : public BinaryExpression {

@@ -80,14 +80,18 @@ public:
                 perror("ERROR reading from socket");
                 exit(1);
             }
-
-            updateVariables(string(buffer), bindTable, symbolTable);
+            try {
+                updateVariables(string(buffer), bindTable, symbolTable);
+            } catch (exception &ex) {
+                cout << format("Unable to update variables because %s. Input from server: %s", ex.what(), buffer)
+                     << endl;
+            }
         }
     }
 
     static void updateVariables(string updateData, BindTable *bindTable, SymbolTable *symbolTable) {
         unsigned long int newLineIndex = updateData.find('\n');
-        if(newLineIndex != updateData.size()){
+        if (newLineIndex != updateData.size()) {
             // New line is there
             vector<string> dataSplit = split(&updateData, '\n');
             updateData = dataSplit.at(0);

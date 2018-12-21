@@ -5,7 +5,7 @@
 #ifndef PROJECT_ADVANCED_EQUALTO_H
 #define PROJECT_ADVANCED_EQUALTO_H
 
-#include "../expressions/BinaryExpression.h"
+#include "../BinaryExpression.h"
 
 class EqualTo : public BinaryExpression {
 public:

@@ -13,11 +13,11 @@
 using namespace std;
 
 class TokenArray {
-    ExpressionParser expressionParser;
     vector<string> array;
+    SymbolTable *symbolTable;
     int i;
 public:
-    TokenArray(SymbolTable *st) : i(0), expressionParser(st) {}
+    TokenArray(SymbolTable *st) : i(0), symbolTable(st) {}
 
     int getIndex() {
         return i;
@@ -59,12 +59,11 @@ public:
     }
 
     Expression *getExpression(const string &token) {
-        return expressionParser.parse(token);
+        return ExpressionParser(symbolTable, token).parse();
     }
 
     Expression *getNextExpression() {
-        string token = next();
-        return expressionParser.parse(token);
+        return ExpressionParser(symbolTable, next()).parse();
     }
 
     string getFrom(int valueToAddToI) {

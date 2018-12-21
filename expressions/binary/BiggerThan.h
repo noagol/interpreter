@@ -5,7 +5,7 @@
 #ifndef PROJECT_ADVANCED_BIGGERTHAN_H
 #define PROJECT_ADVANCED_BIGGERTHAN_H
 
-#include "../expressions/BinaryExpression.h"
+#include "../BinaryExpression.h"
 
 class BiggerThan : public BinaryExpression {
 public:

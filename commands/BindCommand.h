@@ -11,15 +11,30 @@ public:
     BindCommand(Parser *p) : BaseCommand(p) {}
 
     void doCommand() override {
-        string path = parser->getTokenArray()->next();
-        if (path.at(0) != '"' || path.at(path.size() - 1) != '"') {
-            throw ParserException("Invalid argument to bind command");
+        string argument = parser->getTokenArray()->next();
+        // Get variable name
+        string varName = parser->getTokenArray()->getFrom(-4);
+        // Validate variable exists
+        if (!parser->getSymbolTable()->exists(varName)) {
+            throw ParserException(format("Undefined variable to Bind Command: %s", varName));
         }
 
-        string varName = parser->getTokenArray()->getFrom(-4);
+        if (argument.at(0) == '"' && argument.at(argument.size() - 1) == '"') {
+            // String
+            // Insert to bind table
+            parser->getBindTable()->insert(varName, argument.substr(1, argument.size() - 2));
+        } else {
+            // Variable
+            // Check if in the bind table
+            if (!parser->getBindTable()->variableExists(argument)) {
+                throw ParserException(format("Variable %s has not been bind to a path", argument));
+            }
 
-        parser->getBindTable()->insert(varName, path.substr(1, path.size() - 2));
+            // Add to bind table
+            parser->getBindTable()->insert(varName, parser->getBindTable()->getPathByVariable(argument));
+        }
     }
 };
+
 
 #endif //PROJECT_ADVANCED_BINDCOMMAND_H

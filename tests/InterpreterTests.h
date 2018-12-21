@@ -137,6 +137,68 @@ public:
         run(input);
     }
 
+    void expressions1() {
+        string input = "var x = 10 * 10 - 3 print x * 2";
+        cout << "194 expected: " << endl;
+        run(input);
+    }
+
+    void expressions2() {
+        string input = "var x = -(10 * 10) - 3 print x * 2";
+        cout << "-206 expected: " << endl;
+        run(input);
+    }
+
+    void expressions3() {
+        string input = "var x = --10*20 print x * 2";
+        cout << "400 expected: " << endl;
+        run(input);
+    }
+
+
+    void expressions4() {
+        string input = "var x = 5 var y = 8 var z = --(x * y)+25*2-10 print z";
+        cout << "80 expected: " << endl;
+        run(input);
+    }
+
+
+    void expressions5() {
+        string input = "var x = 5 var y = 8 var z = !(--(x * y)-(25*2-10)) print z";
+        cout << "1 expected: " << endl;
+        run(input);
+    }
+
+    void expressions6() {
+        string input = "var h0 = 5 var y90 = 8 var z = (--(h0*y90)-(25*2-10)) print z";
+        cout << "0 expected: " << endl;
+        run(input);
+    }
+
+    void expressions7() {
+        string input = "print 100 + 20*1.5 < 200*0.5 + 31";
+        cout << "1 expected: " << endl;
+        run(input);
+    }
+
+    void expressions8() {
+        string input = "print 100 + 20*1.5";
+        cout << "130 expected: " << endl;
+        run(input);
+    }
+
+    void expressions9() {
+        string input = "print 200*0.5 + 31";
+        cout << "131 expected: " << endl;
+        run(input);
+    }
+
+    void expressions10() {
+        string input = "print (200*0.5 + 31 + -(10*2*(1*2)))";
+        cout << "91 expected: " << endl;
+        run(input);
+    }
+
     void testFile1() {
         Interpreter interpreter = Interpreter();
         interpreter.executeFromFile("../tests/files/simple.txt");

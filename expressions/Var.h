@@ -6,6 +6,7 @@
 #define PROJECT_ADVANCED_VAR_H
 
 #include <string>
+#include <SymbolTable.h>
 #include "Expression.h"
 
 using namespace std;

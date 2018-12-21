@@ -51,14 +51,14 @@ std::string format(const char *fmt, Args... args) {
 
 
 bool endswith(const string base, const string postfix) {
-    if (base.size() < postfix.size()){
+    if (base.size() < postfix.size()) {
         return false;
     }
-    return !base.compare(base.size() - postfix.size() - 1, base.size() - 1, postfix);
+    return !base.compare(base.size() - postfix.size(), base.size() - 1, postfix);
 }
 
 bool startswith(const string base, const string prefix) {
-    if (base.size() < prefix.size()){
+    if (base.size() < prefix.size()) {
         return false;
     }
     return !base.compare(0, prefix.size(), prefix);
@@ -80,8 +80,19 @@ static vector<string> split(string *str, char delimeter) {
     return l;
 }
 
-string strip(string s) {
 
+string lstrip(string str, const string &chars = "\t\n\v\f\r ") {
+    str.erase(0, str.find_first_not_of(chars));
+    return str;
+}
+
+string rstrip(string str, const string &chars = "\t\n\v\f\r ") {
+    str.erase(str.find_last_not_of(chars) + 1);
+    return str;
+}
+
+string strip(string str, const string &chars = "\t\n\v\f\r ") {
+    return lstrip(rstrip(str, chars), chars);
 }
 
 #endif //PROJECT_ADVANCED_STRINGHELPERS_H

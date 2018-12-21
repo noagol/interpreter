@@ -12,6 +12,7 @@
 #include "../helpers/StringHelpers.h"
 #include "../expressions/TokenArray.h"
 #include "TokenMerger.h"
+#include "../helpers/Validator.h"
 
 using namespace std;
 
@@ -174,7 +175,7 @@ public:
             }
 
             // Handle variables and commands
-            if (isalpha(this->currentChar) || this->currentChar == '_') {
+            if (isVariableStart(this->currentChar)) {
                 string token = readName();
                 return Token(NAME, token);
             }
@@ -217,91 +218,7 @@ public:
         return Token(END_OF_INPUT, "");
     }
 
-    bool isStartOrEnd(char c) {
-        return c == '{' || c == '}';
-    }
 
-    bool isNameBreaker(char c) {
-        return isOperator(c) || c == ',' || isWhitespace(c);
-    }
-
-    bool isOperator(char c) {
-        return isBinaryOperator(c) || isStartOperator(c) || isEndOperator(c);
-    }
-
-    bool isBinaryOperator(char c) {
-        return c == '<' || c == '>' || c == '=' || c == '+' || c == '-' || c == '*' || c == '/';
-    }
-
-    bool isStartOperator(char c) {
-        return c == '(' || c == '!' || c == '-';
-    }
-
-    bool isEndOperator(char c) {
-        return c == ')';
-    }
-
-    bool isWhitespace(char c) {
-        return c == ' ' || c == '\n' || c == '\r' || c == '\t';
-    }
 };
-
-//    void lexer() {
-//        string mergedToken;
-//        Token lastToken;
-//        while (this->currentChar != '\0') {
-//            currentToken = getNextToken();
-//            if (currentToken.getType() == NAME || currentToken.getType() == NUMBER) {
-//                // Handle names
-//                if (lastToken.getType() == BINARY_OPERATOR) {
-//                    // Part of expression
-//                    mergedToken += currentToken.getValue();
-//                } else {
-//                    // If expression ended here
-//                    if (!mergedToken.empty()) {
-//                        tokenArray->add(mergedToken);
-//                        mergedToken = "";
-//                    }
-//                    // May be another expression
-//                    mergedToken += currentToken.getValue();
-//                }
-//            } else if (currentToken.getType() == OPERATOR) {
-//                if (lastToken.getType() != OPERATOR) {
-//                    // Operator as part of expression
-//                    mergedToken += currentToken.getValue();
-//                } else {
-//                    // Two subsequent operators
-//                    throw LexerException(format("Two subsequent operators %s", input));
-//                }
-//            } else if (currentToken.getType() == ASSIGNMENT_OPERATOR) {
-//                // Handle assignment operators
-//                if (!mergedToken.empty()) {
-//                    // Add the value before
-//                    tokenArray->add(mergedToken);
-//                    // Add the assignment operator '='
-//                    tokenArray->add(currentToken.getValue());
-//                    // Clear the merged token value
-//                    mergedToken = "";
-//                } else {
-//                    // Assignment to an empty name
-//                    throw LexerException(format("Assignment to empty variable %s", input));
-//                }
-//            } else if (currentToken.getType() == STRING || currentToken.getType() == START_CODE_BLOCK ||
-//                       currentToken.getType() == END_CODE_BLOCK) {
-//                if (!mergedToken.empty()) {
-//                    tokenArray->add(mergedToken);
-//                    mergedToken = "";
-//                }
-//                tokenArray->add(currentToken.getValue());
-//            } else {
-//                throw LexerException("Unknown token type");
-//            }
-//            lastToken = currentToken;
-//        }
-//        if (!mergedToken.empty()) {
-//            tokenArray->add(mergedToken);
-//        }
-//    }
-
 
 #endif //PROJECT_ADVANCED_NEWLEXER_H

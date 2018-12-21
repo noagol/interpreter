@@ -6,8 +6,6 @@
 #define PROJECT_ADVANCED_EXPRESSION_H
 
 
-#include "../tables/SymbolTable.h"
-
 class Expression {
 public:
     virtual double calculate() = 0;

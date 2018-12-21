@@ -5,7 +5,7 @@
 #ifndef PROJECT_ADVANCED_SMALLEROREQUALTHAN_H
 #define PROJECT_ADVANCED_SMALLEROREQUALTHAN_H
 
-#include "../expressions/BinaryExpression.h"
+#include "../BinaryExpression.h"
 
 class SmallerOrEqualThan : public BinaryExpression {
 public:
