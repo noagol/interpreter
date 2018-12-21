@@ -1,16 +1,20 @@
 #include "ExpressionParser.h"
 
 /**
- * Create expression parser object to convert "10 * 5" to new Mult(new Number(10),
- * @param st
- * @param expression
+ * Create expression parser object to convert "10 * 5" to new Mult(new Number(10), new Number(5))
+ * @param st symbol table
+ * @param expression string
  */
 ExpressionParser::ExpressionParser(SymbolTable *st, const string &expression) :
-symbolTable(st), values(), operators(), tokens(expression), pos(0) {
+        symbolTable(st), values(), operators(), tokens(expression), pos(0) {
     currentChar = tokens.at(pos);
     lastType = INPUT_START;
 }
 
+/**
+ * Parse an expression
+ * @return a pointer to the parsed expression
+ */
 Expression *ExpressionParser::parse() {
     // Iterate through the string
     while (currentChar != '\0') {
@@ -58,18 +62,25 @@ Expression *ExpressionParser::parse() {
         }
     }
 
+    // Pop all the operators from the stack
     while (!operators.empty()) {
         popOperator();
     }
 
+    // Return the final expression
     return values.top();
 }
 
+/**
+ * Pop operator and merge with values
+ */
 void ExpressionParser::popOperator() {
+    // Get operator
     OPERATORS op = operators.top();
     operators.pop();
 
     if (op == NEGATIVE || op == LOGICAL_NOT || op == OPEN_BRACKETS) {
+        // Unary operators
         if (values.empty()) {
             throw invalid_argument("Invalid expression");
         }
@@ -79,7 +90,7 @@ void ExpressionParser::popOperator() {
         values.push(applyOpUnary(val, op));
         lastType = UNARY_OP;
     } else {
-        // Binary
+        // Binary operators
         if (values.empty()) {
             throw invalid_argument("Invalid expression");
         }
@@ -96,7 +107,11 @@ void ExpressionParser::popOperator() {
     }
 }
 
-
+/**
+ * Get the precedence of an operator
+ * @param op operator
+ * @return precedence value
+ */
 int ExpressionParser::precedence(OPERATORS op) {
     if (op == PLUS || op == MINUS)
         return 1;
@@ -105,7 +120,13 @@ int ExpressionParser::precedence(OPERATORS op) {
     return 0;
 }
 
-// Function to perform arithmetic operations.
+/**
+ * Apply an oparator to two expressions
+ * @param a first
+ * @param b second
+ * @param op operator
+ * @return Merge expression
+ */
 Expression *ExpressionParser::applyOpBinary(Expression *a, Expression *b, OPERATORS op) {
     switch (op) {
         case PLUS:
@@ -133,6 +154,12 @@ Expression *ExpressionParser::applyOpBinary(Expression *a, Expression *b, OPERAT
     }
 }
 
+/**
+ * Apply unary operator to an expression
+ * @param a argument
+ * @param op unary operator
+ * @return the merged expression
+ */
 Expression *ExpressionParser::applyOpUnary(Expression *a, OPERATORS op) {
     switch (op) {
         case NEGATIVE:
@@ -146,7 +173,10 @@ Expression *ExpressionParser::applyOpUnary(Expression *a, OPERATORS op) {
     }
 }
 
-
+/**
+ * Get operator of current char
+ * @return operator
+ */
 OPERATORS ExpressionParser::getOperator() {
     bool nextIsEqual = (peekNext() == '=');
 
@@ -198,6 +228,9 @@ OPERATORS ExpressionParser::getOperator() {
     }
 }
 
+/**
+ * Advance to next position
+ */
 void ExpressionParser::advance() {
     pos++;
     if (this->pos > tokens.size() - 1) {
@@ -208,6 +241,10 @@ void ExpressionParser::advance() {
     }
 }
 
+/**
+ * Read a number from the expression
+ * @return number value
+ */
 double ExpressionParser::readNumber() {
     string token;
     while (this->currentChar != '\0' && (isdigit(this->currentChar) || currentChar == '.')) {
@@ -218,6 +255,10 @@ double ExpressionParser::readNumber() {
     return stod(token);
 }
 
+/**
+ * Read a variable from the expression
+ * @return variable name
+ */
 string ExpressionParser::readVariable() {
     string token;
     while (this->currentChar != '\0' && (isalnum(this->currentChar) || currentChar == '_')) {
@@ -228,6 +269,10 @@ string ExpressionParser::readVariable() {
     return token;
 }
 
+/**
+ * Peek the next character
+ * @return next char
+ */
 char ExpressionParser::peekNext() {
     if (this->pos > tokens.size() - 1) {
         // End of input
@@ -237,6 +282,11 @@ char ExpressionParser::peekNext() {
     }
 }
 
+/**
+ * Get type of a given operator
+ * @param op operator
+ * @return expression type
+ */
 EXPRESSION_TYPES ExpressionParser::getType(OPERATORS op) {
     switch (op) {
         case PLUS:
@@ -260,23 +310,42 @@ EXPRESSION_TYPES ExpressionParser::getType(OPERATORS op) {
     }
 }
 
+/**
+ * Is unary expression
+ * @return true if unary is expected
+ */
 bool ExpressionParser::isUnaryExpected() {
     return (lastType == BINARY_OP || lastType == START_OP || lastType == INPUT_START);
 }
 
+/**
+ * Check if a char may be unary expression
+ * @param c char
+ * @return c may be unary
+ */
 bool ExpressionParser::mayBeUnary(char c) {
     return c == '-' || c == '!';
 }
 
+/**
+ * Read unary expression
+ * @return unary expression
+ */
 Expression *ExpressionParser::readUnaryExpression() {
+    // Initialize
     char c = currentChar;
+    // Move to next
     advance();
     Expression *expression;
+
     if (isdigit(peekNext())) {
+        // Read number
         expression = new Number(readNumber());
     } else if (isVariableStart(currentChar)) {
+        // Read variable
         expression = new Var(readVariable(), symbolTable);
     } else if (mayBeUnary(peekNext())) {
+        // Read unary expression recursivly
         expression = readUnaryExpression();
     } else if (peekNext() == '(') {
         // Recursively parse
@@ -286,6 +355,7 @@ Expression *ExpressionParser::readUnaryExpression() {
         throw ParserException(format("Invalid expression given. Expected unary expression %s", tokens));
     }
 
+    // Wrap the expression
     if (c == '-') {
         return new Neg(expression);
     } else if (c == '!') {
@@ -295,10 +365,15 @@ Expression *ExpressionParser::readUnaryExpression() {
     }
 }
 
+/**
+ * Advance until next )
+ * @return the expression read - (***)
+ */
 string ExpressionParser::advanceToNextEnd() {
     string expression;
     int numberOfOpeners = 0;
 
+    // Read until end
     while (currentChar != '\0') {
         expression += currentChar;
         advance();
@@ -315,5 +390,6 @@ string ExpressionParser::advanceToNextEnd() {
         }
     }
 
+    // No closing brackets
     throw ParserException(format("Missing closing parentheses: %s", tokens));
 }
