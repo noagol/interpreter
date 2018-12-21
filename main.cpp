@@ -39,14 +39,14 @@ int main() {
 //    t.expressions7();
 //    t.expressions8();
 //    t.expressions9();
-//    t.expressions10();
-    t.expressions11();
+ //   t.expressions10();
+
 
 //    t.testFile1();
 //    t.testFile2();
 //    t.testFile3();
 //    t.testFile4();
-
+    t.testFile5();
 
     return 0;
 }

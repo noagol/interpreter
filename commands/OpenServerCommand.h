@@ -7,6 +7,7 @@
 #include <netinet/in.h>
 #include <pthread.h>
 #include "BaseCommand.h"
+#include "../exceptions/CommandException.h"
 #include <string>
 
 
@@ -17,10 +18,16 @@ public:
     void doCommand() override {
         // Extract params
         Expression *portExp = parser->getNextExpression();
+        if (portExp == nullptr) {
+            throw CommandException("Not enough arguments for openServerCommand. Expected: 2, 0 given");
+        }
         int port = (int) portExp->calculate();
         delete (portExp);
 
         Expression *hzExp = parser->getNextExpression();
+        if (hzExp == nullptr) {
+            throw CommandException("Not enough arguments for openServerCommand. Expected: 2, 1 given");
+        }
         int timesPerSecond = (int) hzExp->calculate();
         delete (hzExp);
 
