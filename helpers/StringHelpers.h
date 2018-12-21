@@ -15,7 +15,7 @@
 using namespace std;
 
 // base case of recursion, no more arguments
-void format_impl(std::stringstream &ss, const char *format) {
+static void format_impl(std::stringstream &ss, const char *format) {
     while (*format) {
         if (*format == '%' && *++format != '%') // %% == % (not a format directive)
             throw std::invalid_argument("not enough arguments !\n");
@@ -24,7 +24,7 @@ void format_impl(std::stringstream &ss, const char *format) {
 }
 
 template<typename Arg, typename... Args>
-void format_impl(std::stringstream &ss, const char *format, Arg arg, Args... args) {
+static void format_impl(std::stringstream &ss, const char *format, Arg arg, Args... args) {
     while (*format) {
         if (*format == '%' && *++format != '%') {
             auto current_format_qualifier = *format;
@@ -43,21 +43,21 @@ void format_impl(std::stringstream &ss, const char *format, Arg arg, Args... arg
 }
 
 template<typename... Args>
-std::string format(const char *fmt, Args... args) {
+static std::string format(const char *fmt, Args... args) {
     std::stringstream ss;
     format_impl(ss, fmt, args...);
     return ss.str();
 }
 
 
-bool endswith(const string base, const string postfix) {
+static bool endswith(const string base, const string postfix) {
     if (base.size() < postfix.size()) {
         return false;
     }
     return !base.compare(base.size() - postfix.size(), base.size() - 1, postfix);
 }
 
-bool startswith(const string base, const string prefix) {
+static bool startswith(const string base, const string prefix) {
     if (base.size() < prefix.size()) {
         return false;
     }
@@ -81,17 +81,17 @@ static vector<string> split(string *str, char delimeter) {
 }
 
 
-string lstrip(string str, const string &chars = "\t\n\v\f\r ") {
+static string lstrip(string str, const string &chars = "\t\n\v\f\r ") {
     str.erase(0, str.find_first_not_of(chars));
     return str;
 }
 
-string rstrip(string str, const string &chars = "\t\n\v\f\r ") {
+static string rstrip(string str, const string &chars = "\t\n\v\f\r ") {
     str.erase(str.find_last_not_of(chars) + 1);
     return str;
 }
 
-string strip(string str, const string &chars = "\t\n\v\f\r ") {
+static string strip(string str, const string &chars = "\t\n\v\f\r ") {
     return lstrip(rstrip(str, chars), chars);
 }
 
