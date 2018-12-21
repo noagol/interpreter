@@ -1,6 +1,4 @@
-//
-// Created by EB on 13/12/2018.
-//
+
 
 #ifndef PROJECT_ADVANCED_NOTEQUALTO_H
 #define PROJECT_ADVANCED_NOTEQUALTO_H
@@ -9,11 +7,9 @@
 
 class NotEqualTo : public BinaryExpression {
 public:
-    NotEqualTo(Expression *l, Expression *r) : BinaryExpression(l, r) {}
+    NotEqualTo(Expression *l, Expression *r) ;
 
-    double calculate() override {
-        return getLeft()->calculate() != getRight()->calculate();
-    }
+    double calculate() override;
 };
 
 #endif //PROJECT_ADVANCED_NOTEQUALTO_H
