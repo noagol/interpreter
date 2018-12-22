@@ -16,6 +16,11 @@ public:
      * execute a command
      */
     virtual void doCommand() = 0;
+
+    /**
+     * Destroy object
+     */
+    virtual ~Command() {}
 };
 
 #endif //ADVANCED_COMMAND_H

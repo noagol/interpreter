@@ -5,15 +5,15 @@
 #ifndef PROJECT_ADVANCED_H_H
 #define PROJECT_ADVANCED_H_H
 
-#include <SleepCommand.h>
-#include <PrintCommand.h>
-#include <AssignmentCommand.h>
-#include <IfCommand.h>
-#include <LoopCommand.h>
-#include <BindCommand.h>
-#include <DefineVarCommand.h>
-#include <OpenServerCommand.h>
-#include <ConnectCommand.h>
+#include "../commands/SleepCommand.h"
+#include "../commands/PrintCommand.h"
+#include "../commands/AssignmentCommand.h"
+#include "../commands/IfCommand.h"
+#include "../commands/LoopCommand.h"
+#include "../commands/BindCommand.h"
+#include "../commands/DefineVarCommand.h"
+#include "../commands/OpenServerCommand.h"
+#include "../commands/ConnectCommand.h"
 #include "../expressions/TokenArray.h"
 #include "Lexer.h"
 #include "Parser.h"

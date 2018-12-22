@@ -23,7 +23,6 @@ void AssignmentCommand::doCommand() {
     if (parser->getCommandTable()->exists(token)) {
         Expression *command = parser->getCommandTable()->get(token);
         command->calculate();
-
     } else { // If the token is expression
         Expression *expression = parser->getTokenArray()->getExpression(token);
         if (expression == nullptr) {

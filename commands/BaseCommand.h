@@ -2,7 +2,7 @@
 #ifndef PROJECT_ADVANCED_BASECOMMAND_H
 #define PROJECT_ADVANCED_BASECOMMAND_H
 
-#include <Parser.h>
+#include "../interpreter/Parser.h"
 #include "Command.h"
 
 class BaseCommand : public Command {

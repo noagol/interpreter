@@ -3,11 +3,9 @@
 #ifndef ADVANCED_IFCOMMAND_H
 
 #include <list>
-#include <Parser.h>
 #include "Command.h"
 #include "ConditionParser.h"
 #include "../exceptions/CommandException.h"
-
 
 #define ADVANCED_IFCOMMAND_H
 

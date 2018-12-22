@@ -4,7 +4,6 @@
 #define PROJECT_ADVANCED_LOOPCOMMAND_H
 
 #include <list>
-#include <Parser.h>
 #include "Command.h"
 #include "ConditionParser.h"
 #include "../exceptions/CommandException.h"
@@ -16,7 +15,7 @@ class LoopCommand : public ConditionParser {
 public:
     LoopCommand(Parser *p);
 
-    void doCommand() override ;
+    void doCommand() override;
 };
 
 #endif //PROJECT_ADVANCED_LOOPCOMMAND_H

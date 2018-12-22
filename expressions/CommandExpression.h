@@ -1,9 +1,10 @@
 
 #ifndef PROJECT_ADVANCED_COMMANDEXPRESSION_H
-#include <Command.h>
-#include "Expression.h"
-#define PROJECT_ADVANCED_COMMANDEXPRESSION_H
 
+#include "../commands/Command.h"
+#include "Expression.h"
+
+#define PROJECT_ADVANCED_COMMANDEXPRESSION_H
 
 
 class CommandExpression : public Expression {

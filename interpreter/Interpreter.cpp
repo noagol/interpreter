@@ -118,14 +118,13 @@ void Interpreter::destroy() {
  * Initialize the commands
  */
 void Interpreter::initCommands() {
-    CommandTable *ct = parser->getCommandTable();
-    ct->add(OPEN_DATA_SERVER_COMMAND, new CommandExpression(new OpenServerCommand(parser)));
-    ct->add(SLEEP_COMMAND, new CommandExpression(new SleepCommand(parser)));
-    ct->add(PRINT_COMMAND, new CommandExpression(new PrintCommand(parser)));
-    ct->add(VAR_COMMAND, new CommandExpression(new DefineVarCommand(parser)));
-    ct->add(BIND_COMMAND, new CommandExpression(new BindCommand(parser)));
-    ct->add(ASSIGNMENT_COMMAND, new CommandExpression(new AssignmentCommand(parser)));
-    ct->add(IF_COMMAND, new CommandExpression(new IfCommand(parser)));
-    ct->add(WHILE_COMMAND, new CommandExpression(new LoopCommand(parser)));
-    ct->add(CONNECT_COMMAND, new CommandExpression(new ConnectCommand(parser)));
+    commandTable->add(OPEN_DATA_SERVER_COMMAND, new CommandExpression(new OpenServerCommand(parser)));
+    commandTable->add(SLEEP_COMMAND, new CommandExpression(new SleepCommand(parser)));
+    commandTable->add(PRINT_COMMAND, new CommandExpression(new PrintCommand(parser)));
+    commandTable->add(VAR_COMMAND, new CommandExpression(new DefineVarCommand(parser)));
+    commandTable->add(BIND_COMMAND, new CommandExpression(new BindCommand(parser)));
+    commandTable->add(ASSIGNMENT_COMMAND, new CommandExpression(new AssignmentCommand(parser)));
+    commandTable->add(IF_COMMAND, new CommandExpression(new IfCommand(parser)));
+    commandTable->add(WHILE_COMMAND, new CommandExpression(new LoopCommand(parser)));
+    commandTable->add(CONNECT_COMMAND, new CommandExpression(new ConnectCommand(parser)));
 }

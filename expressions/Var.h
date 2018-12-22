@@ -2,7 +2,7 @@
 #ifndef PROJECT_ADVANCED_VAR_H
 
 #include <string>
-#include <SymbolTable.h>
+#include "../tables/SymbolTable.h"
 #include "Expression.h"
 
 #define PROJECT_ADVANCED_VAR_H

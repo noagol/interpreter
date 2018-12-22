@@ -1,21 +1,21 @@
 #ifndef PROJECT_ADVANCED_EXPRESSIONPARSER_H
 
 #include <bits/stdc++.h>
-#include "../expressions/binary/Plus.h"
-#include "../expressions/binary/Minus.h"
-#include "../expressions/binary/Mult.h"
-#include "../expressions/binary/Div.h"
+#include "binary/Plus.h"
+#include "binary/Minus.h"
+#include "binary/Mult.h"
+#include "binary/Div.h"
 #include "Number.h"
 #include "Var.h"
-#include "../expressions/binary/SmallerOrEqualThan.h"
-#include "../expressions/binary/BiggerThan.h"
-#include "../expressions/binary/BiggerOrEqualThan.h"
-#include "../expressions/binary/EqualTo.h"
-#include "../expressions/binary/NotEqualTo.h"
-#include "../expressions/binary/SmallerThan.h"
+#include "binary/SmallerOrEqualThan.h"
+#include "binary/BiggerThan.h"
+#include "binary/BiggerOrEqualThan.h"
+#include "binary/EqualTo.h"
+#include "binary/NotEqualTo.h"
+#include "binary/SmallerThan.h"
 #include "../exceptions/ParserException.h"
-#include "../expressions/unary/Neg.h"
-#include "../expressions/unary/Not.h"
+#include "unary/Neg.h"
+#include "unary/Not.h"
 #include "../helpers/Validator.h"
 
 using namespace std;

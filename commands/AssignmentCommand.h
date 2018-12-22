@@ -3,7 +3,7 @@
 #ifndef PROJECT_ADVANCED_ASSIGNMENTCOMMAND_H
 #define PROJECT_ADVANCED_ASSIGNMENTCOMMAND_H
 
-#include <CommandTable.h>
+#include "../tables/CommandTable.h"
 #include "Command.h"
 #include "../expressions/TokenArray.h"
 #include "BaseCommand.h"

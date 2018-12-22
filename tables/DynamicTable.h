@@ -21,7 +21,7 @@ public:
 
     bool exists(const string &key);
 
-    ~DynamicTable();
+    virtual ~DynamicTable();
 };
 
 template<class T>
