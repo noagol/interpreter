@@ -77,6 +77,7 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
     // Now bind the host address using bind() call.
     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0) {
         perror("ERROR on binding");
+        close(sockfd);
         exit(1);
     }
 
@@ -93,6 +94,7 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
 
         if (newsockfd < 0) {
             perror("ERROR on accept");
+            close(sockfd);
             exit(1);
         }
 
@@ -102,6 +104,7 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
 
         if (n < 0) {
             perror("ERROR reading from socket");
+            close(sockfd);
             exit(1);
         }
         try {
@@ -111,6 +114,8 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
                  << endl;
         }
     }
+    // Close the socket
+    close(sockfd);
 }
 
 /**

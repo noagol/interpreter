@@ -59,6 +59,7 @@ void ConnectCommand::runClient(string ip, int port,
 
     if (server == NULL) {
         fprintf(stderr, "ERROR, no such host\n");
+        close(sockfd);
         exit(0);
     }
 
@@ -100,6 +101,7 @@ void ConnectCommand::runClient(string ip, int port,
                     // Check if message sent
                     if (n < 0) {
                         perror("ERROR writing to socket");
+                        close(sockfd);
                         exit(1);
                     }
                 }
@@ -108,6 +110,9 @@ void ConnectCommand::runClient(string ip, int port,
         // Sleep a little and continue to check for updates
         this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 250));
     }
+
+    // Close the socket
+    close(sockfd);
 }
 
 /**
