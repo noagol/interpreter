@@ -84,7 +84,7 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
     /** Now start listening for the clients, here process will
     go in sleep mode and will wait for the incoming connection
     **/
-
+    int hz = (1000 / timesPerSecond );
     listen(sockfd, 5);
     clilen = sizeof(cli_addr);
     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
@@ -113,6 +113,8 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
             cout << format("Unable to update variables because %s. Input from server: %s", ex.what(), buffer)
                  << endl;
         }
+
+        this_thread::sleep_for(std::chrono::milliseconds((unsigned int) hz));
     }
     // Close the socket
     close(sockfd);

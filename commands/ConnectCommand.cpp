@@ -71,7 +71,7 @@ void ConnectCommand::runClient(string ip, int port,
     // Now connect to the server
     int tries = 0;
 
-    while (tries < RETRIES_COUNT) {
+    while (tries < RETRIES_COUNT  && !ConnectCommand::shouldStop) {
         if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) >= 0) {
             break;
         }
