@@ -229,6 +229,11 @@ public:
         interpreter.executeFromFile("../tests/files/main.txt");
     }
 
+    void testFile6() {
+        Interpreter interpreter = Interpreter();
+        interpreter.executeFromFile("../tests/files/nested_conditions.txt");
+    }
+
     void Test() {
         InterpreterTest t = InterpreterTest();
 //        t.test1();
@@ -268,6 +273,7 @@ public:
 //        t.testFile3();
 //        t.testFile4();
 //        t.testFile5();
+        t.testFile6();
     }
 
 };

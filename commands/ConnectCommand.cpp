@@ -17,6 +17,11 @@ ConnectCommand::ConnectCommand(Parser *p) : BaseCommand(p) {}
 void ConnectCommand::doCommand() {
     // get the ip
     string ip = parser->getTokenArray()->next();
+
+    if (!validateIp(ip)) {
+        throw CommandException(format("Invalid ip given to connect command: %s", ip));
+    }
+
     // get port number
     Expression *portExp = parser->getNextExpression();
     int port = (int) portExp->calculate();
