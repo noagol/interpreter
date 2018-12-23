@@ -1,4 +1,5 @@
 #include "OpenServerCommand.h"
+#include "ConnectCommand.h"
 
 /**
  * Command class to open server
@@ -55,7 +56,7 @@ void OpenServerCommand::doCommand() {
 void OpenServerCommand::runServer(int port, int timesPerSecond,
                                   BindTable *bindTable, SymbolTable *symbolTable) {
     int sockfd, newsockfd, portno, clilen;
-    char buffer[256];
+    char buffer[1024];
     struct sockaddr_in serv_addr, cli_addr;
     int n;
 
@@ -84,11 +85,13 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
     /** Now start listening for the clients, here process will
     go in sleep mode and will wait for the incoming connection
     **/
-    int hz = (1000 / timesPerSecond );
+    int hz = (1000 / timesPerSecond);
     listen(sockfd, 5);
     clilen = sizeof(cli_addr);
     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
 
+    int i;
+    char last;
     while (!shouldStop) {
         // Accept actual connection from the client
 
@@ -99,16 +102,27 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
         }
 
         /* If connection is established then start communicating */
-        bzero(buffer, 256);
-        n = read(newsockfd, buffer, 255);
+        bzero(buffer, 1024);
+        i = 0;
+        n = 0;
+        last = '\0';
+        while (i < 1024 && last != '\n' && n >= 0) {
+            n = read(newsockfd, buffer + i, 1);
+            last = buffer[i];
+            i++;
+
+        }
 
         if (n < 0) {
             perror("ERROR reading from socket");
             close(sockfd);
             exit(1);
         }
+
         try {
-            updateVariables(string(buffer), bindTable, symbolTable);
+            if (ConnectCommand::getStatus() == CONNECTED) {
+                updateVariables(strip(string(buffer)), bindTable, symbolTable);
+            }
         } catch (exception &ex) {
             cout << format("Unable to update variables because %s. Input from server: %s", ex.what(), buffer)
                  << endl;

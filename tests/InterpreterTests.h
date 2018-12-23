@@ -271,8 +271,8 @@ public:
 //        t.testFile1();
 //        t.testFile2();
 //        t.testFile3();
-        t.testFile4();
-//        t.testFile5();
+//        t.testFile4();
+        t.testFile5();
 //        t.testFile6();
     }
 

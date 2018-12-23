@@ -4,6 +4,7 @@
  * should Stop boolean to end thread
  */
 bool ConnectCommand::shouldStop = false;
+Status ConnectCommand::status = NOT_CONNECTED;
 
 /**
  * Command class to open client
@@ -44,6 +45,9 @@ void ConnectCommand::doCommand() {
  */
 void ConnectCommand::runClient(string ip, int port,
                                SymbolTable *symbolTable, BindTable *bindTable) {
+    // Set status
+    status = CONNECTING;
+
     int sockfd, portno, n;
     struct sockaddr_in serv_addr;
     struct hostent *server;
@@ -71,7 +75,7 @@ void ConnectCommand::runClient(string ip, int port,
     // Now connect to the server
     int tries = 0;
 
-    while (tries < RETRIES_COUNT  && !ConnectCommand::shouldStop) {
+    while (tries < RETRIES_COUNT && !ConnectCommand::shouldStop) {
         if (connect(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) >= 0) {
             break;
         }
@@ -81,8 +85,12 @@ void ConnectCommand::runClient(string ip, int port,
     // If we were unable to connect
     if (tries == RETRIES_COUNT - 1) {
         perror("Unable to connect");
+        status = NOT_CONNECTED;
         exit(1);
     }
+
+    this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 5000));
+    status = CONNECTED;
 
     // Update the server for changes
     vector<string> changes;
@@ -102,6 +110,7 @@ void ConnectCommand::runClient(string ip, int port,
                     if (n < 0) {
                         perror("ERROR writing to socket");
                         close(sockfd);
+                        status = NOT_CONNECTED;
                         exit(1);
                     }
                 }
@@ -113,6 +122,8 @@ void ConnectCommand::runClient(string ip, int port,
 
     // Close the socket
     close(sockfd);
+
+    status = NOT_CONNECTED;
 }
 
 /**
@@ -120,4 +131,8 @@ void ConnectCommand::runClient(string ip, int port,
  */
 void ConnectCommand::stop() {
     shouldStop = true;
+}
+
+Status ConnectCommand::getStatus() {
+    return status;
 }

@@ -13,9 +13,11 @@
 
 #define PROJECT_ADVANCED_CONNECTCOMMAND_H
 
+enum Status {NOT_CONNECTED, CONNECTING, CONNECTED};
 
 class ConnectCommand : public BaseCommand {
     static bool shouldStop;
+    static Status status;
 public:
     ConnectCommand(Parser *p);
 
@@ -26,6 +28,8 @@ public:
                           BindTable *bindTable);
 
     static void stop();
+
+    static Status getStatus();
 
 };
 
