@@ -57,7 +57,7 @@ Expression *ExpressionParser::parse() {
                    precedence(operators.top()) >= precedence(op)) {
                 popOperator();
             }
-
+            lastType = getType(op);
             operators.push(op);
         }
     }

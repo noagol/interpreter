@@ -163,7 +163,7 @@ void OpenServerCommand::updateVariables(string updateData, BindTable *bindTable,
             value = stod(sp.at(i));
             variables = bindTable->getVariablesByPath(path);
             for (it = variables.begin(); it != variables.end(); it++) {
-                symbolTable->update(*it, value);
+                symbolTable->update(*it, value, false);
             }
         }
     }

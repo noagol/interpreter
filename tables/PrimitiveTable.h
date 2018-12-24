@@ -21,7 +21,7 @@ public:
 
     void add(string key, T value);
 
-    void update(string key, T v);
+    void update(string key, T v, bool addToChanged = true);
 
     vector<string> getChangedKeys();
 
@@ -50,13 +50,15 @@ void PrimitiveTable<T>::add(string key, T value) {
 }
 
 template<class T>
-void PrimitiveTable<T>::update(string key, T v) {
+void PrimitiveTable<T>::update(string key, T v, bool addToChanged) {
     if (!exists(key)) {
         throw invalid_argument(format("Unable to update missing key %s", key));
     } else {
         lock_guard<mutex> l(lock);
         table[key] = v;
-        changed.push_back(key);
+        if (addToChanged) {
+            changed.push_back(key);
+        }
     }
 }
 
