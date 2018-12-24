@@ -56,8 +56,8 @@ void Lexer::advance() {
 /**
  * Skip whitespaces
  */
-void Lexer::skipWhitespaces() {
-    while (this->currentChar != '\0' && isWhitespace(this->currentChar)) {
+void Lexer::skip() {
+    while (this->currentChar != '\0' && (isWhitespace(this->currentChar)|| isRedundent(this->currentChar))) {
         advance();
     }
 }
@@ -176,8 +176,8 @@ Token Lexer::readStartOrEnd() {
 Token Lexer::getNextToken() {
     while (this->currentChar != '\0') {
         // Handle whitespaces
-        if (isWhitespace(this->currentChar)) {
-            skipWhitespaces();
+        if (isWhitespace(this->currentChar) || isRedundent(currentChar)) {
+            skip();
             continue;
         }
 

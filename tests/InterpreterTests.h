@@ -200,7 +200,7 @@ public:
     }
 
     void expressions12() {
-        string input = "connect 127.0.0.1  9";
+        string input = "openDataServer 5*1000+4, 5*2";
         cout << "-91 expected: " << endl;
         run(input);
     }
@@ -263,25 +263,25 @@ public:
 //        t.test18();
 //
 //
-//        t.expressions1();
-//        t.expressions2();
-//        t.expressions3();
-//        t.expressions4();
-//        t.expressions5();
-//        t.expressions6();
-//        t.expressions7();
-//        t.expressions8();
-//        t.expressions9();
-//        t.expressions10();
-//
+        t.expressions1();
+        t.expressions2();
+        t.expressions3();
+        t.expressions4();
+        t.expressions5();
+        t.expressions6();
+        t.expressions7();
+        t.expressions8();
+        t.expressions9();
+        t.expressions10();
+        t.expressions12();
 //
 //        t.testFile1();
 //        t.testFile2();
 //        t.testFile3();
 //        t.testFile4();
- //       t.testFile5();
+//       t.testFile5();
 //        t.testFile6();
-        t.testFile7();
+//        t.testFile7();
 
     }
 

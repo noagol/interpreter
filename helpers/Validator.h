@@ -35,6 +35,10 @@ static bool isWhitespace(char c) {
     return c == ' ' || c == '\n' || c == '\r' || c == '\t' || c == '\f' || c == '\v';
 }
 
+static bool isRedundent(char c) {
+    return c == ',';
+}
+
 /**
  * @param c character
  * @return true if c is binary operator
@@ -80,7 +84,7 @@ static bool isVariableStart(char c) {
  * @param str input string
  * @return true if a number
  */
-static bool isNumber(const string& str) {
+static bool isNumber(const string &str) {
     // std::find_first_not_of searches the string for the first character
     // that does not match any of the characters specified in its arguments
     return !str.empty() &&
@@ -110,7 +114,6 @@ static bool validateIp(string ip) {
 
     return true;
 }
-
 
 
 #endif //PROJECT_ADVANCED_VALIDATOR_H
