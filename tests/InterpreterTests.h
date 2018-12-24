@@ -1,7 +1,3 @@
-//
-// Created by noa on 13/12/2018.
-//
-
 #ifndef PROJECT_ADVANCED_INTERPRETERTESTS_H
 #define PROJECT_ADVANCED_INTERPRETERTESTS_H
 
@@ -203,6 +199,12 @@ public:
         run(input);
     }
 
+    void expressions12() {
+        string input = "connect 127.0.0.1  9";
+        cout << "-91 expected: " << endl;
+        run(input);
+    }
+
     void testFile1() {
         Interpreter interpreter = Interpreter();
         interpreter.executeFromFile("../tests/files/simple.txt");
@@ -232,6 +234,11 @@ public:
     void testFile6() {
         Interpreter interpreter = Interpreter();
         interpreter.executeFromFile("../tests/files/nested_conditions.txt");
+    }
+
+    void testFile7() {
+        Interpreter interpreter = Interpreter();
+        interpreter.executeFromFile("../tests/files/x.txt");
     }
 
     void Test() {
@@ -272,8 +279,10 @@ public:
 //        t.testFile2();
 //        t.testFile3();
 //        t.testFile4();
-        t.testFile5();
+ //       t.testFile5();
 //        t.testFile6();
+        t.testFile7();
+
     }
 
 };

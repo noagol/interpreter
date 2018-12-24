@@ -16,5 +16,6 @@ int main(int argc, char **argv) {
 //    in.executeFromFile(argv[1]);
     InterpreterTest a = InterpreterTest();
     a.Test();
+    //a.expressions12();
     return 0;
 }
