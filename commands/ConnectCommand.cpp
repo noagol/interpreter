@@ -31,6 +31,12 @@ void ConnectCommand::doCommand() {
     if (1 > port || port > 65535) {
         throw CommandException(format("Port value out of range: %d", port));
     }
+
+    // Wait for user input
+    cout << "After engine is on please press ENTER" << endl;
+    char dummy;
+    scanf("%c", &dummy);
+
     // open new thread
     thread clientThread(runClient, ip, port, parser->getSymbolTable(), parser->getBindTable());
     clientThread.detach();
@@ -89,7 +95,6 @@ void ConnectCommand::runClient(string ip, int port,
         exit(1);
     }
 
-    this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 5000));
     status = CONNECTED;
 
     // Update the server for changes

@@ -241,6 +241,11 @@ public:
         interpreter.executeFromFile("../tests/files/x.txt");
     }
 
+    void testFile8() {
+        Interpreter interpreter = Interpreter();
+        interpreter.executeFromFile("../tests/files/connect.txt");
+    }
+
     void Test() {
         InterpreterTest t = InterpreterTest();
 //        t.test1();
@@ -279,9 +284,10 @@ public:
 //        t.testFile2();
 //        t.testFile3();
 //        t.testFile4();
-       t.testFile5();
+        t.testFile5();
 //        t.testFile6();
 //        t.testFile7();
+//        t.testFile8();
 
     }
 
