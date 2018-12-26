@@ -1,6 +1,5 @@
 
 #include "interpreter/Interpreter.h"
-#include "../tests/InterpreterTests.h"
 
 using namespace std;
 

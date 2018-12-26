@@ -1,4 +1,4 @@
-#include <EntercCommand.h>
+#include "../commands/EntercCommand.h"
 #include "../commands/ExitCommand.h"
 #include "Interpreter.h"
 #include "../exceptions/ExitException.h"
