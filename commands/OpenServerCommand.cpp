@@ -88,33 +88,51 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
     int hz = (1000 / timesPerSecond);
     listen(sockfd, 5);
     clilen = sizeof(cli_addr);
+
+    // Accept actual connection from the client
     newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
+    if (newsockfd < 0) {
+        perror("ERROR on accept");
+        close(sockfd);
+        exit(1);
+    }
 
-    int i;
-    char last;
+    this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 2500));
+
+//    // Wait for engine to start
+//    double throttle = 0;
+//    while (!shouldStop) {
+//        try {
+//            readValuesToBuffer(buffer, newsockfd);
+//        } catch (runtime_error &ex) {
+//            perror("ERROR reading from socket");
+//            close(newsockfd);
+//            close(sockfd);
+//            exit(1);
+//        }
+//        // Split by ,
+//        string updateData = string(buffer);
+//        vector<string> sp = split(&updateData, ',');
+//
+//        throttle = stod(sp.at(THROTTLE_POSITION));
+//        if (throttle == 0.2) {
+//            // Engine start
+//            if (ConnectCommand::getStatus() == NOT_CONNECTED) {
+//                ConnectCommand::setStatus(CONNECTING);
+//            }
+//        } else if (throttle > 0.2 && ConnectCommand::getStatus() == CONNECTED) {
+//            break;
+//        }
+//    }
+
+    // Update variables
     while (!shouldStop) {
-        // Accept actual connection from the client
-
-        if (newsockfd < 0) {
-            perror("ERROR on accept");
-            close(sockfd);
-            exit(1);
-        }
-
         /* If connection is established then start communicating */
-        bzero(buffer, 1024);
-        i = 0;
-        n = 0;
-        last = '\0';
-        while (i < 1024 && last != '\n' && n >= 0) {
-            n = read(newsockfd, buffer + i, 1);
-            last = buffer[i];
-            i++;
-
-        }
-
-        if (n < 0) {
+        try {
+            readValuesToBuffer(buffer, newsockfd);
+        } catch (runtime_error &ex) {
             perror("ERROR reading from socket");
+            close(newsockfd);
             close(sockfd);
             exit(1);
         }
@@ -130,9 +148,30 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
 
         this_thread::sleep_for(std::chrono::milliseconds((unsigned int) hz));
     }
+
     // Close the socket
+    if (newsockfd) {
+        close(newsockfd);
+    }
     close(sockfd);
 }
+
+void OpenServerCommand::readValuesToBuffer(char *buffer, int socket) {
+    bzero(buffer, 1024);
+    int i = 0;
+    ssize_t n = 0;
+    char last = '\0';
+    while (i < 1024 && last != '\n' && n >= 0) {
+        n = read(socket, buffer + i, 1);
+        last = buffer[i];
+        i++;
+    }
+
+    if (n < 0) {
+        throw runtime_error("Error reading from socket");
+    }
+}
+
 
 /**
  * Update variables using an update data from the server
@@ -141,13 +180,6 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
  * @param symbolTable the symbol table
  */
 void OpenServerCommand::updateVariables(string updateData, BindTable *bindTable, SymbolTable *symbolTable) {
-    unsigned long int newLineIndex = updateData.find('\n');
-    if (newLineIndex != updateData.size()) {
-        // New line is there
-        vector<string> dataSplit = split(&updateData, '\n');
-        updateData = dataSplit.at(0);
-    }
-
     // Split by ,
     vector<string> sp = split(&updateData, ',');
 

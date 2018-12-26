@@ -10,6 +10,7 @@
 #include "../exceptions/CommandException.h"
 #include <string>
 
+#define THROTTLE_POSITION 21
 
 class OpenServerCommand : public BaseCommand {
     static bool shouldStop;
@@ -23,6 +24,8 @@ public:
 
     static void updateVariables(string updateData, BindTable *bindTable,
                                 SymbolTable *symbolTable);
+
+    static void readValuesToBuffer(char* buffer, int socket);
 
     static void stop();
 };

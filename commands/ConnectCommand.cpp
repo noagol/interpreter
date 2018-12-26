@@ -37,7 +37,12 @@ void ConnectCommand::doCommand() {
     char dummy;
     scanf("%c", &dummy);
 
-    // open new thread
+//    // Wait for the signal from the server
+//    while (status != CONNECTING) {
+//        this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 250));
+//    }
+
+    // Open new thread
     thread clientThread(runClient, ip, port, parser->getSymbolTable(), parser->getBindTable());
     clientThread.detach();
 }
@@ -51,7 +56,6 @@ void ConnectCommand::doCommand() {
  */
 void ConnectCommand::runClient(string ip, int port,
                                SymbolTable *symbolTable, BindTable *bindTable) {
-    // Set status
     status = CONNECTING;
 
     int sockfd, portno, n;
@@ -140,4 +144,8 @@ void ConnectCommand::stop() {
 
 Status ConnectCommand::getStatus() {
     return status;
+}
+
+Status ConnectCommand::setStatus(Status s) {
+    status = s;
 }

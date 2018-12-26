@@ -31,6 +31,8 @@ public:
 
     static Status getStatus();
 
+    static Status setStatus(Status s);
+
 };
 
 #endif //PROJECT_ADVANCED_CONNECTCOMMAND_H

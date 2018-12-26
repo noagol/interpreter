@@ -14,7 +14,6 @@ int main(int argc, char **argv) {
     // Run the interpreter
     Interpreter in = Interpreter();
     in.executeFromFile(argv[1]);
-//    InterpreterTest a = InterpreterTest();
-//    a.Test();
+
     return 0;
 }

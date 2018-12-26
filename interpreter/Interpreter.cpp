@@ -1,4 +1,6 @@
+#include <ExitCommand.h>
 #include "Interpreter.h"
+#include "../exceptions/ExitException.h"
 
 /**
  * Interpreter main class
@@ -26,7 +28,12 @@ void Interpreter::executeFromFile(const string &path) {
         // Read line or a code block
         line = readLine(myFile);
         while (!line.empty()) {
-            executeFromLine(line);
+            try {
+                executeFromLine(line);
+            } catch (ExitException& ex) {
+                // Program exited
+                break;
+            }
             line = readLine(myFile);
         }
         // Close the file
@@ -127,4 +134,5 @@ void Interpreter::initCommands() {
     commandTable->add(IF_COMMAND, new CommandExpression(new IfCommand(parser)));
     commandTable->add(WHILE_COMMAND, new CommandExpression(new LoopCommand(parser)));
     commandTable->add(CONNECT_COMMAND, new CommandExpression(new ConnectCommand(parser)));
+    commandTable->add(EXIT_COMMAND, new CommandExpression(new ExitCommand(parser)));
 }

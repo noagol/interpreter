@@ -14,11 +14,12 @@
 #define IF_COMMAND "if"
 #define WHILE_COMMAND "while"
 #define CONNECT_COMMAND "connect"
+#define EXIT_COMMAND "exit"
 
 
 using namespace std;
 
-class CommandTable : public DynamicTable<Expression>{
+class CommandTable : public DynamicTable<Expression> {
 public:
     CommandTable() {};
 };
