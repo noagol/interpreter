@@ -15,6 +15,7 @@
 #define WHILE_COMMAND "while"
 #define CONNECT_COMMAND "connect"
 #define EXIT_COMMAND "exit"
+#define ENTERC_COMMAND "enterc"
 
 
 using namespace std;

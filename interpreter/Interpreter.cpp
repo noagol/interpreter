@@ -1,4 +1,5 @@
-#include <ExitCommand.h>
+#include <EntercCommand.h>
+#include "../commands/ExitCommand.h"
 #include "Interpreter.h"
 #include "../exceptions/ExitException.h"
 
@@ -135,4 +136,5 @@ void Interpreter::initCommands() {
     commandTable->add(WHILE_COMMAND, new CommandExpression(new LoopCommand(parser)));
     commandTable->add(CONNECT_COMMAND, new CommandExpression(new ConnectCommand(parser)));
     commandTable->add(EXIT_COMMAND, new CommandExpression(new ExitCommand(parser)));
+    commandTable->add(ENTERC_COMMAND, new CommandExpression(new EntercCommand(parser)));
 }

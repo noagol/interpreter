@@ -32,10 +32,7 @@ void ConnectCommand::doCommand() {
         throw CommandException(format("Port value out of range: %d", port));
     }
 
-    // Wait for user input
-    cout << "After engine is on please press ENTER" << endl;
-    char dummy;
-    scanf("%c", &dummy);
+
 
 //    // Wait for the signal from the server
 //    while (status != CONNECTING) {
