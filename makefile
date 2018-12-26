@@ -1,2 +1,2 @@
-compile:
-	g++ -std=c++1y -pthread ./*/*.h ./*/*.cpp ./*/*/*.h ./*/*/*.cpp ./main.cpp
+all:
+	g++ -std=c++14 -pthread ./*/*.h ./*/*.cpp ./*/*/*.h ./*/*/*.cpp ./main.cpp

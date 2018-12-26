@@ -1,7 +1,8 @@
 The program gets commands from a file
 
 How to run the program:
->>> make compile
+>>> make all
 >>> ./a.out PATH_TO_FILE
 
-When the engine is on press ENTER key
+Using enterc command
+When the engine is on and ready to takeoff press ENTER key

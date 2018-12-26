@@ -97,7 +97,7 @@ void OpenServerCommand::runServer(int port, int timesPerSecond,
         exit(1);
     }
 
-    this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 2500));
+//    this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 2500));
 
 //    // Wait for engine to start
 //    double throttle = 0;

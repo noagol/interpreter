@@ -98,6 +98,9 @@ void ConnectCommand::runClient(string ip, int port,
 
     status = CONNECTED;
 
+//    this_thread::sleep_for(std::chrono::milliseconds((unsigned int) 5000));
+
+
     // Update the server for changes
     vector<string> changes;
     vector<string>::iterator it;
